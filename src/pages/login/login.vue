@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useTokenStore } from '@/store/token'
 import { useUserStore } from '@/store/user'
 import { tabbarList } from '@/tabbar/config'
 import { isPageTabbar } from '@/tabbar/store'
@@ -25,20 +24,19 @@ onLoad((options) => {
 })
 
 const userStore = useUserStore()
-const tokenStore = useTokenStore()
 async function doLogin() {
-  if (tokenStore.hasLogin) {
-    uni.navigateBack()
-    return
-  }
+  // if (tokenStore.hasLogin) {
+  //   uni.navigateBack()
+  //   return
+  // }
   try {
     // 有的时候后端会用一个接口返回token和用户信息，有的时候会分开2个接口（各有利弊，看业务场景和系统复杂度），这里使用2个接口返回的来模拟
     // 1/2 调用接口回来后设置token信息
     // 这里用单token来模拟
-    tokenStore.setTokenInfo({
-      token: '123456',
-      expiresIn: 60 * 60 * 24 * 7,
-    })
+    // tokenStore.setTokenInfo({
+    //   token: '123456',
+    //   expiresIn: 60 * 60 * 24 * 7,
+    // })
 
     // 2/2 调用接口回来后设置用户信息
     // const res = await login({

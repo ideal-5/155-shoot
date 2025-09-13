@@ -18,6 +18,7 @@ export const useUserStore = defineStore(
   () => {
     // 定义用户信息
     const userInfo = ref<IUserInfoRes>({ ...userInfoState })
+    const hasLogin = ref(false)
     // 设置用户信息
     const setUserInfo = (val: IUserInfoRes) => {
       console.log('设置用户信息', val)
@@ -49,6 +50,7 @@ export const useUserStore = defineStore(
 
     return {
       userInfo,
+      hasLogin,
       clearUserInfo,
       fetchUserInfo,
       setUserInfo,
