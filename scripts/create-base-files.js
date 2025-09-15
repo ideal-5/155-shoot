@@ -17,7 +17,7 @@ const manifest = {
 const pages = {
   pages: [
     {
-      path: 'pages/index/index',
+      path: 'pages/home',
       style: {
         navigationBarTitleText: 'uni-app',
       },

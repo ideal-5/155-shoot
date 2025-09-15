@@ -20,29 +20,35 @@ export const TABBAR_STRATEGY_MAP = {
 // 如果是使用 NO_TABBAR(0)，nativeTabbarList 和 customTabbarList 都不生效(里面的配置不用管)
 // 如果是使用 NATIVE_TABBAR(1)，只需要配置 nativeTabbarList，customTabbarList 不生效
 // 如果是使用 CUSTOM_TABBAR(2,3)，只需要配置 customTabbarList，nativeTabbarList 不生效
-export const selectedTabbarStrategy = TABBAR_STRATEGY_MAP.CUSTOM_TABBAR_WITH_CACHE
+export const selectedTabbarStrategy = TABBAR_STRATEGY_MAP.NATIVE_TABBAR
 
 type NativeTabBarItem = TabBar['list'][number]
 
 // TODO: 2/3. 使用 NATIVE_TABBAR 时，更新下面的 tabbar 配置
 export const nativeTabbarList: NativeTabBarItem[] = [
   {
-    iconPath: 'static/tabbar/home.png',
-    selectedIconPath: 'static/tabbar/homeHL.png',
-    pagePath: 'pages/index/index',
+    iconPath: 'static/tabbar/1-0.png',
+    selectedIconPath: 'static/tabbar/1-1.png',
+    pagePath: 'pages/home',
     text: '首页',
   },
   {
-    iconPath: 'static/tabbar/example.png',
-    selectedIconPath: 'static/tabbar/exampleHL.png',
-    pagePath: 'pages/about/about',
-    text: '关于',
+    iconPath: 'static/tabbar/2-0.png',
+    selectedIconPath: 'static/tabbar/2-1.png',
+    pagePath: 'pages/video',
+    text: '视频',
   },
   {
-    iconPath: 'static/tabbar/personal.png',
-    selectedIconPath: 'static/tabbar/personalHL.png',
-    pagePath: 'pages/me/me',
-    text: '个人',
+    iconPath: 'static/tabbar/3-0.png',
+    selectedIconPath: 'static/tabbar/3-1.png',
+    pagePath: 'pages/order',
+    text: '订单',
+  },
+  {
+    iconPath: 'static/tabbar/4-0.png',
+    selectedIconPath: 'static/tabbar/4-1.png',
+    pagePath: 'pages/me',
+    text: '我的',
   },
 ]
 
@@ -63,7 +69,7 @@ export interface CustomTabBarItem {
 export const customTabbarList: CustomTabBarItem[] = [
   {
     text: '首页',
-    pagePath: 'pages/index/index',
+    pagePath: 'pages/home',
     // 本框架内置了 uniapp 官方UI库 （uni-ui)的图标库
     // 使用方式如：<uni-icons type="home" size="30"/>
     // 图标列表地址：https://uniapp.dcloud.net.cn/component/uniui/uni-icons.html
@@ -82,7 +88,7 @@ export const customTabbarList: CustomTabBarItem[] = [
     // badge: 10,
   },
   {
-    pagePath: 'pages/me/me',
+    pagePath: 'pages/me',
     text: '我的',
     iconType: 'uniUi',
     icon: 'contact',
