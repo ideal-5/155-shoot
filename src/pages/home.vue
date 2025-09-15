@@ -5,7 +5,9 @@ definePage({
 </script>
 
 <template>
-  <div>首页</div>
+  <div>
+    <NavBar>首页</NavBar>
+  </div>
 </template>
 
 <style scoped lang='scss'>

@@ -86,9 +86,15 @@ export default ({ command, mode }) => {
       },
       UnoCSS(),
       AutoImport({
-        imports: ['vue', 'uni-app'],
+        imports: [
+          'vue',
+          'uni-app',
+          {
+            pinia: ['storeToRefs'], // 👈 这里添加 pinia响应式解构
+          },
+        ],
         dts: 'src/types/auto-import.d.ts',
-        dirs: ['src/hooks'], // 自动导入 hooks
+        dirs: ['src/hooks', 'src/store'], // 自动导入 hooks
         vueTemplate: true, // default false
       }),
       // Optimization 插件需要 page.json 文件，故应在 UniPages 插件之后执行

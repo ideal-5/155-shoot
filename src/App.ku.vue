@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useThemeStore } from '@/store'
 import FgTabbar from '@/tabbar/index.vue'
 import { isPageTabbar } from './tabbar/store'
 import { currRoute } from './utils'
@@ -9,7 +8,7 @@ const themeStore = useThemeStore()
 
 const isCurrentPageTabbar = ref(true)
 onShow(() => {
-  console.log('App.ku.vue onShow', currRoute())
+  // console.log('App.ku.vue onShow', currRoute())
   const { path } = currRoute()
   isCurrentPageTabbar.value = isPageTabbar(path)
 })

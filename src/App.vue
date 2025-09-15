@@ -3,7 +3,12 @@ import { onHide, onLaunch, onShow } from '@dcloudio/uni-app'
 import { navigateToInterceptor } from '@/router/interceptor'
 import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only'
 
+const systemStore = useSystemStore()
+// const userStore = useUserStore()
+
 onLaunch((options) => {
+  systemStore.initSetSystem()
+  // userStore.refreshUserInfo()
   console.log('App Launch', options)
 })
 onShow((options) => {
