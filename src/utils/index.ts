@@ -65,6 +65,16 @@ export function parseUrlToObj(url: string) {
   return { path, query }
 }
 /**
+ * 解析 obj 得到 query
+ */
+export function objToQuery(obj: Record<string, string | number | boolean>) {
+  if (!obj) {
+    return ''
+  }
+  return Object.keys(obj).map(key => `${key}=${encodeURIComponent(obj[key])}`).join('&')
+}
+
+/**
  * 得到所有的需要登录的 pages，包括主包和分包的
  * 这里设计得通用一点，可以传递 key 作为判断依据，默认是 excludeLoginPath, 与 route-block 配对使用
  * 如果没有传 key，则表示所有的 pages，如果传递了 key, 则表示通过 key 过滤

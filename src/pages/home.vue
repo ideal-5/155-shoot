@@ -142,7 +142,10 @@ onPageScroll((e) => {
             :list="dataList"
           >
             <template #item="{ item }">
-              <div class="mb1 wf overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff">
+              <div
+                class="mb1 wf overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff"
+                @click="gotoPage('/pages-sub/scenic/details', { id: 1 })"
+              >
                 <div class="relative h-fit wf">
                   <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
                     <image
@@ -157,12 +160,13 @@ onPageScroll((e) => {
                     </div>
                   </div>
                   <WImage
+                    custom-image="inline-block!"
                     :src="item.img"
                     mode="widthFix"
                     custom-class="wf!"
                   />
                 </div>
-                <div class="box-border h20 wf p2.5">
+                <div class="box-border h20 wf bg-amber p2.5">
                   <div class="line-clamp-1 mb1.25 wf text-(3.75 #111827) fw500">
                     {{ item.title }}
                   </div>

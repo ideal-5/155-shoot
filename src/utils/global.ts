@@ -1,3 +1,4 @@
+import { objToQuery } from './index'
 /**
  * 图片资源的基准路径
  */
@@ -16,6 +17,7 @@ export function getTestListApi(pageNo: number, pageSize: number, time: number = 
 }
 
 // 页面跳转
-export function gotoPage(url: Parameters<typeof uni.navigateTo>[0]['url']) {
-  uni.navigateTo({ url })
+export function gotoPage(url: Parameters<typeof uni.navigateTo>[0]['url'], query?: Record<string, string | number>) {
+  const queryStr = objToQuery(query)
+  uni.navigateTo({ url: `${url}${queryStr ? `?${queryStr}` : ''}` })
 }

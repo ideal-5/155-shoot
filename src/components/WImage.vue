@@ -1,4 +1,14 @@
 <script setup lang="ts">
+/**
+ *
+ * 二次封装图片组件
+ * 如果发现图片下面有个间隙去不掉 可以用  customImage="inline-block!"
+ * 但是使用了customImage="inline-block!" 图片加载中的加载图标就没法居中
+ * 所以把使权力给外面
+ * 还不知道什么原因 后面有时间再改把
+ *
+ */
+
 import type { ImageMode } from 'wot-design-uni/components/wd-img/types'
 import { defineProps, useAttrs, useSlots } from 'vue'
 // #ifdef MP-WEIXIN
