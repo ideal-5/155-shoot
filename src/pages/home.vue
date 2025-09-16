@@ -135,16 +135,32 @@ onPageScroll((e) => {
         <z-paging ref="pagingRef" v-model="dataList" :use-page-scroll="true" @query="queryList">
           <waterfall
             ref="waterfallRef"
+            :extra-height="84"
             img-key="img"
             class-name="grid grid-cols-2 gap-1"
             :list="dataList"
           >
             <template #item="{ item }">
-              <div class="mb1 wf overflow-hidden b-rd-2.25 bg-#fff">
-                <image
-                  :src="item.img"
-                  mode="widthFix"
-                />
+              <div class="mb1 wf overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff">
+                <div class="relative h-fit wf">
+                  <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
+                    <image
+                      :src="`${IMAGE_BASE_URL}/bg/18.png`"
+                      class="absolute inset-0 z1"
+                    />
+                    <div class="z2 text-(3.5 #fff) fw500">
+                      5A
+                    </div>
+                    <div class="z2 text-(3 #fff) fw500">
+                      名胜古迹
+                    </div>
+                  </div>
+                  <WImage
+                    :src="item.img"
+                    mode="widthFix"
+                    custom-class="wf!"
+                  />
+                </div>
                 <div class="box-border h20 wf p2.5">
                   <div class="line-clamp-1 mb1.25 wf text-(3.75 #111827) fw500">
                     {{ item.title }}

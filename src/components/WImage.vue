@@ -1,0 +1,77 @@
+<script setup lang="ts">
+import type { ImageMode } from 'wot-design-uni/components/wd-img/types'
+import { defineProps, useAttrs, useSlots } from 'vue'
+// #ifdef MP-WEIXIN
+// 将自定义节点设置成虚拟的（去掉自定义组件包裹层），更加接近Vue组件的表现，能更好的使用flex属性
+defineOptions({
+  virtualHost: true,
+})
+// #endif
+
+// 定义 props
+const props = withDefaults(defineProps<{ mode?: ImageMode, src?: string, customImage?: string }>(), {
+  mode: 'aspectFill',
+  src: '',
+  customImage: '',
+})
+
+const myCustomImage = computed(() => `inline-block! ${props.customImage}`)
+
+// 获取其他透传的属性
+const attrs = useAttrs()
+
+// 动态绑定事件<获取外面绑定了什么事件>
+const bindEvents = Object.keys(attrs)
+  .filter(key => key.startsWith('on'))
+  .reduce((events, key) => {
+    events[key] = attrs[key]
+    return events
+  }, {})
+
+// 合并 attrs 和 bindEvents
+const mergedAttrs = {
+  ...attrs,
+  ...bindEvents,
+}
+
+// 获取外部插槽
+const slots = useSlots()
+</script>
+
+<template>
+  <wd-img
+    :mode="(attrs.mode as ImageMode) || props.mode"
+    :src="props.src"
+    :custom-image="myCustomImage"
+    v-bind="mergedAttrs"
+  >
+    <template #loading>
+      <div class="size-full">
+        <!-- 默认内容 -->
+        <div v-if="!slots.loading" class="size-full f-c-c">
+          <i class="i-svg-spinners:clock" />
+        </div>
+        <!-- 自定义内容 -->
+        <slot name="loading" />
+      </div>
+    </template>
+
+    <template #error>
+      <div class="size-full">
+        <!-- 默认内容 -->
+        <div v-if="!slots.error" class="size-full f-c-c text-4 text-#fff">
+          加载失败
+        </div>
+        <!-- 自定义内容 -->
+        <slot name="error" />
+      </div>
+    </template>
+
+    <!-- #ifndef MP-WEIXIN -->
+    <!-- 小程序环境报错 slotName is not defined -->
+    <template v-for="(_slotContent, slotName) in slots" #[slotName] :key="slotName">
+      <slot :name="slotName" />
+    </template>
+    <!-- #endif -->
+  </wd-img>
+</template>
