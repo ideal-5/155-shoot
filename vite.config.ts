@@ -93,7 +93,7 @@ export default ({ command, mode }) => {
             pinia: ['storeToRefs'], // 👈 这里添加 pinia响应式解构
           },
           {
-            'wot-design-uni': ['useToast', 'useMessage'], // 👈 这里添加 useToast
+            'wot-design-uni': ['useToast', 'useMessage', 'useQueue'], // 👈 这里添加 useToast
           },
           {
             // 指定模块路径

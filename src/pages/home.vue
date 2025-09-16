@@ -93,7 +93,7 @@ onPageScroll((e) => {
       </div>
 
       <div class="grid grid-cols-2 mb5 mt3.75 box-border h37.5 wf gap-2.5 px3.75">
-        <div class="row-span-2 size-full b-rd-3.25">
+        <div class="row-span-2 size-full b-rd-3.25" @click="gotoPage('/pages-sub/scenic/list')">
           <image
             :src="`${IMAGE_BASE_URL}/bg/28.png`"
             class="size-full"
