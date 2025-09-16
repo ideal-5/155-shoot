@@ -65,7 +65,7 @@ export default ({ command, mode }) => {
         exclude: ['**/components/**/**.*'],
         // homePage 通过 vue 文件的 route-block 的type="home"来设定
         // pages 目录为 src/pages，分包目录不能配置在pages目录下
-        subPackages: ['src/pages-sub'], // 是个数组，可以配置多个，但是不能为pages里面的目录
+        subPackages: ['src/pages-sub/scenic'], // 是个数组，可以配置多个，但是不能为pages里面的目录
         dts: 'src/types/uni-pages.d.ts',
       }),
       UniLayouts(),
@@ -93,8 +93,11 @@ export default ({ command, mode }) => {
             pinia: ['storeToRefs'], // 👈 这里添加 pinia响应式解构
           },
           {
+            'wot-design-uni': ['useToast', 'useMessage'], // 👈 这里添加 useToast
+          },
+          {
             // 指定模块路径
-            '@/utils/global': ['IMAGE_BASE_URL', 'getTestListApi'],
+            '@/utils/global': ['IMAGE_BASE_URL', 'gotoPage', 'getTestListApi'],
           },
         ],
         dts: 'src/types/auto-import.d.ts',

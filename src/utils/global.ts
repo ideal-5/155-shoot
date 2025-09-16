@@ -14,3 +14,8 @@ export function getTestListApi(pageNo: number, pageSize: number, time: number = 
     }, time)
   })
 }
+
+// 页面跳转
+export function gotoPage(url: Parameters<typeof uni.navigateTo>[0]['url']) {
+  uni.navigateTo({ url })
+}

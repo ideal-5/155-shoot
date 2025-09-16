@@ -61,6 +61,7 @@ onPageScroll((e) => {
               <div
                 class="box-border wf f-c f-c b-rd-full bg-#fff px3.5 text-(3 #111827)"
                 :style="{ height: `${menuButtonHeight}px` }"
+                @click="gotoPage('/pages-sub/scenic/search')"
               >
                 <i class="i-carbon:search mr0.5 flex-shrink-0 text-4 fw600" />
                 <div class="line-clamp-1 min-w-0 flex-1">
