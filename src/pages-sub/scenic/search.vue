@@ -8,7 +8,12 @@ async function tapSearch() {
   // const res = await uni.login()
   // console.log('res', res)
   if (val.value) {
-    searchHistoryStore.addSearchHistory(val.value)
+    uni.navigateTo({
+      url: `/pages-sub/scenic/search-result?keyword=${val.value}`,
+      success: () => {
+        searchHistoryStore.addSearchHistory(val.value)
+      },
+    })
   }
 }
 

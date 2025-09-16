@@ -173,6 +173,25 @@ onPageScroll((e) => {
               </div>
             </template>
           </waterfall>
+
+          <!-- 骨架屏 -->
+          <template #loading>
+            <Loading />
+          </template>
+          <!-- 下拉刷新  -->
+          <template #refresher="{ refresherStatus }">
+            <LotRefresh :status="refresherStatus" />
+          </template>
+          <!-- 底部的加载中 -->
+          <template #loadingMoreLoading>
+            <LotLoading />
+          </template>
+          <template #loadingMoreNoMore>
+            <LotNoMore />
+          </template>
+          <template #loadingMoreFail>
+            <LotErr />
+          </template>
         </z-paging>
       </div>
     </div>
