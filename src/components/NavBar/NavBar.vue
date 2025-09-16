@@ -53,7 +53,6 @@ const slots = useSlots()
 const systemStore = useSystemStore()
 const { navbarHeight, statusBarHeight, titleBarHeight, menuButtonWidth } = storeToRefs(systemStore)
 
-console.log('navbarHeight', navbarHeight.value)
 function goBacksPage() {
   emit('tapBackIcon')
   if (!props.isStopBack) {

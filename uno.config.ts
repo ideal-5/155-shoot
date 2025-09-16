@@ -46,9 +46,10 @@ export default defineConfig({
     transformerVariantGroup(),
   ],
   shortcuts: [
-    {
-      center: 'flex justify-center items-center',
-    },
+    ['f-c-c', 'flex justify-center items-center'],
+    ['f-c', 'flex items-center'],
+    ['wf', 'wfull'],
+    ['hf', 'hfull'],
   ],
   // 动态图标需要在这里配置，或者写在vue页面中注释掉
   safelist: ['i-carbon-code'],

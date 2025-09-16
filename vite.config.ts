@@ -92,6 +92,10 @@ export default ({ command, mode }) => {
           {
             pinia: ['storeToRefs'], // 👈 这里添加 pinia响应式解构
           },
+          {
+            // 指定模块路径
+            '@/utils/global': ['IMAGE_BASE_URL', 'getTestListApi'],
+          },
         ],
         dts: 'src/types/auto-import.d.ts',
         dirs: ['src/hooks', 'src/store'], // 自动导入 hooks

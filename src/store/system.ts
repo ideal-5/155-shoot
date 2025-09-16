@@ -7,6 +7,7 @@ export const useSystemStore = defineStore('system', () => {
 
     // #ifdef MP-WEIXIN
     MENU_BUTTON: undefined as ReturnType<typeof uni.getMenuButtonBoundingClientRect> | undefined, // 胶囊按钮位置信息
+    menuButtonHeight: 0, // 胶囊按钮高度(胶囊按钮并不沾满标题栏 而是上下都有相同的间隙)
     // #endif
 
     statusBarHeight: 0, // 状态栏(时间栏)高度
@@ -54,6 +55,7 @@ export const useSystemStore = defineStore('system', () => {
     state.MENU_BUTTON = MENU_BUTTON
     const { top, height } = MENU_BUTTON // top 胶囊按钮top与顶部的距离
     titleTextHeight = height // 小程序中文字高度等于胶囊按钮高度
+    state.menuButtonHeight = height
     titlePaddingHeight = top - state.statusBarHeight // 小程序中边距等于胶囊按钮距离顶部距离 - 状态栏高度
     state.menuButtonWidth = SYSTEM.screenWidth - MENU_BUTTON.left
     state.menuButtonLeft = MENU_BUTTON.left
