@@ -11,12 +11,12 @@
 
 import type { ImageMode } from 'wot-design-uni/components/wd-img/types'
 import { defineProps, useAttrs, useSlots } from 'vue'
-// #ifdef MP-WEIXIN
-// 将自定义节点设置成虚拟的（去掉自定义组件包裹层），更加接近Vue组件的表现，能更好的使用flex属性
+
 defineOptions({
-  virtualHost: true,
+  options: {
+    virtualHost: true,
+  },
 })
-// #endif
 
 // 定义 props
 const props = withDefaults(defineProps<{ mode?: ImageMode, src?: string, customImage?: string }>(), {
@@ -25,7 +25,7 @@ const props = withDefaults(defineProps<{ mode?: ImageMode, src?: string, customI
   customImage: '',
 })
 
-const myCustomImage = computed(() => `inline-block! ${props.customImage}`)
+const myCustomImage = computed(() => `${props.customImage}`)
 
 // 获取其他透传的属性
 const attrs = useAttrs()

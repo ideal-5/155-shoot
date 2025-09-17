@@ -70,7 +70,7 @@ function tapSearch() {
       >
         <template #item="{ item }">
           <div class="mb1 wf overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff">
-            <div class="relative h-fit wf">
+            <div class="relative h-fit wf f-c-c">
               <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
                 <image
                   :src="`${IMAGE_BASE_URL}/bg/18.png`"
