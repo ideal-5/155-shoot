@@ -65,7 +65,10 @@ export default ({ command, mode }) => {
         exclude: ['**/components/**/**.*'],
         // homePage 通过 vue 文件的 route-block 的type="home"来设定
         // pages 目录为 src/pages，分包目录不能配置在pages目录下
-        subPackages: ['src/pages-sub/scenic'], // 是个数组，可以配置多个，但是不能为pages里面的目录
+        subPackages: [
+          'src/pages-sub/scenic',
+          'src/pages-sub/retouch',
+        ], // 是个数组，可以配置多个，但是不能为pages里面的目录
         dts: 'src/types/uni-pages.d.ts',
       }),
       UniLayouts(),

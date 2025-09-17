@@ -107,7 +107,7 @@ onPageScroll((e) => {
             mode="scaleToFill"
           />
         </div>
-        <div class="size-full b-rd-3.25">
+        <div class="size-full b-rd-3.25" @click="gotoPage('/pages-sub/retouch/index')">
           <image
             :src="`${IMAGE_BASE_URL}/bg/30.png`"
             class="size-full"

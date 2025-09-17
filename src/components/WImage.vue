@@ -19,10 +19,16 @@ defineOptions({
 })
 
 // 定义 props
-const props = withDefaults(defineProps<{ mode?: ImageMode, src?: string, customImage?: string }>(), {
+const props = withDefaults(defineProps<{
+  mode?: ImageMode
+  src?: string
+  customImage?: string
+  loadingClass?: string
+}>(), {
   mode: 'aspectFill',
   src: '',
   customImage: '',
+  loadingClass: '',
 })
 
 const myCustomImage = computed(() => `${props.customImage}`)
@@ -58,7 +64,7 @@ const slots = useSlots()
     <template #loading>
       <div class="size-full">
         <!-- 默认内容 -->
-        <div v-if="!slots.loading" class="size-full f-c-c">
+        <div v-if="!slots.loading" class="size-full h20 f-c-c" :class="loadingClass">
           <i class="i-svg-spinners:clock" />
         </div>
         <!-- 自定义内容 -->
