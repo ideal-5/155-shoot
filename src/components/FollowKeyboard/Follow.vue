@@ -8,12 +8,17 @@ interface Props {
   transitionDuration?: number
   isShowMask?: boolean
   maskOpacity?: number
+  /**
+   * 动画状态是否脱离文档流
+   */
+  isLeaveDocument?: boolean
 }
 const props = withDefaults(defineProps<Props>(), {
   zIndex: 20,
   transitionDuration: 300,
   isShowMask: true,
   maskOpacity: 0.5,
+  isLeaveDocument: false,
 })
 
 const emit = defineEmits<{
@@ -23,10 +28,12 @@ const emit = defineEmits<{
 const { SYSTEM } = storeToRefs(useSystemStore())
 
 const isFollow = ref(false)
-const isTransition = ref(false)
+const isFollowTransition = ref(false) // 是否正在移动过度中
+const isCancelFollowTransition = ref(false) // 是否正在归位移动过度中
 const isMask = ref(false)
 const instance = getCurrentInstance()
 
+const domCoordinates = ref({ left: 0, top: 0 })
 const translateX = ref(0)
 const translateY = ref(0)
 
@@ -42,12 +49,14 @@ const follow: AContext['follow'] = (distance, transitionCompleteCallback) => {
         return
       }
       if (distance?.left != null) {
+        domCoordinates.value.left = data.left
         translateX.value = distance.left - data.left
       }
       if (distance?.right != null) {
         translateX.value = distance.right - data.right
       }
       if (distance?.top != null) {
+        domCoordinates.value.top = data.top
         translateY.value = distance.top - data.top
       }
       if (distance?.bottom != null) {
@@ -56,9 +65,9 @@ const follow: AContext['follow'] = (distance, transitionCompleteCallback) => {
       }
       isFollow.value = true
       isMask.value = true
-      isTransition.value = true
+      isFollowTransition.value = true
       setTimeout(() => {
-        isTransition.value = false
+        isFollowTransition.value = false
         if (transitionCompleteCallback) {
           transitionCompleteCallback()
         }
@@ -71,10 +80,10 @@ const cancelFollow: AContext['cancelFollow'] = (transitionCompleteCallback) => {
   translateX.value = 0
   translateY.value = 0
   isFollow.value = false
-  isTransition.value = true
+  isCancelFollowTransition.value = true
   isMask.value = false
   setTimeout(() => {
-    isTransition.value = false
+    isCancelFollowTransition.value = false
     if (transitionCompleteCallback) {
       transitionCompleteCallback()
     }
@@ -112,13 +121,15 @@ defineExpose<{
   />
   <div
     id="follow-box-id"
-    class="relative transition-transform ease-in-out"
+    class="transition-transform ease-in-out"
+    :class="[(props.isLeaveDocument && (isFollow || isCancelFollowTransition)) ? 'fixed' : 'relative']"
     :style="[
       {
         transform: `translate(${translateX}px, ${translateY}px)`,
         transitionDuration: `${props.transitionDuration}ms`,
       },
-      (isFollow || isTransition) && { zIndex: props.zIndex + 1, position: 'relative' },
+      (isFollow || isFollowTransition || isCancelFollowTransition) && { zIndex: props.zIndex + 1 },
+      (props.isLeaveDocument && (isFollow || isCancelFollowTransition)) && { top: `${domCoordinates.top}px`, left: `${domCoordinates.left}px` },
     ]"
   >
     <slot />

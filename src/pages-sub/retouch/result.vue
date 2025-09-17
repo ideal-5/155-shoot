@@ -31,7 +31,12 @@ const existFollow = computed(() => imgList.value.some(item => item.isFollow))
               <div class="absolute left-0 top-0 z2 box-border f-c-c b-rd-br-2.25 bg-#000000/50 px1.5 py0.5 text-(3.5 #fff) fw500">
                 {{ item.text }}
               </div>
-              <WImage loading-class="h50!" custom-class="wf! overflow-hidden! b-rd-2.5!" mode="widthFix" :src="item.img" />
+              <WImage
+                loading-class="h50!"
+                custom-class="wf! overflow-hidden! b-rd-2.5!"
+                mode="widthFix"
+                :src="item.img"
+              />
             </div>
           </FollowDiv>
         </Follow>
