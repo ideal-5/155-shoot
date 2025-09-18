@@ -40,7 +40,7 @@ function stopVideo(item: any) {
 <template>
   <div class="min-h100vh wf bg-[linear-gradient(to_bottom,#1E88E5,#F2F3F7_610rpx)]">
     <NavBar />
-    <div class="mb5 mt9.25 wf f-c flex-col">
+    <div class="mb5 mt9.25 wf f-c flex-col" @click="gotoPage('/pages-sub/me/me-info')">
       <WImage custom-class="size-19.25! b-rd-full! overflow-hidden!" src="https://picsum.photos/200/300" />
       <div class="mb1.5 mt2.5 text-(4.75 #111827) fw500">
         温润小队长
