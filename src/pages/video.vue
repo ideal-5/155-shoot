@@ -10,6 +10,10 @@ onLoad(() => {
   anchors.value = [0, SYSTEM.value.windowHeight - navbarHeight.value]
   height.value = anchors.value[0]
 })
+
+function tapToSelfie() {
+  gotoPage('/pages-sub/selfie/index')
+}
 </script>
 
 <template>
@@ -103,7 +107,7 @@ onLoad(() => {
       </div>
 
       <div class="box-border wf px6">
-        <wd-button custom-class="h13.5! fw500! text-4.5! wf! bg-[linear-gradient(180deg,#1E88E5_0%,#80B7E7_100%)]!">
+        <wd-button custom-class="h13.5! fw500! text-4.5! wf! bg-[linear-gradient(180deg,#1E88E5_0%,#80B7E7_100%)]!" @click="tapToSelfie">
           自拍获取视频
         </wd-button>
       </div>
