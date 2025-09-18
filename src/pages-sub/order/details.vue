@@ -99,7 +99,7 @@ onLoad(({ id }) => {
       <wd-button custom-class="w28! h9.5! mr2.25!" type="info" plain>
         取消订单
       </wd-button>
-      <wd-button custom-class="w28! h9.5! bg-#1E88E5 mr2.25!">
+      <wd-button custom-class="w28! h9.5! bg-#1E88E5 mr2.25!" @click="gotoPage('/pages-sub/order/pay-success')">
         立即支付
       </wd-button>
     </div>
