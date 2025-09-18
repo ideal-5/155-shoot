@@ -19,7 +19,7 @@
     <wd-button custom-class="w35! h11! mb8!">
       我知道了
     </wd-button>
-    <wd-button plain type="info" custom-class="w35! h11!">
+    <wd-button plain type="info" custom-class="w35! h11!" @click="gotoPage('/pages-sub/selfie/my-video')">
       去查看
     </wd-button>
   </div>
