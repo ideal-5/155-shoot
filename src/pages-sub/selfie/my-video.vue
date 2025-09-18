@@ -77,6 +77,7 @@ function tapDownload() {
 </script>
 
 <template>
+  <PayPopup />
   <z-paging
     ref="pagingRef"
     v-model="dataList"
