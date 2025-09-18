@@ -16,7 +16,11 @@ const props = withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="grid grid-cols-2 wf" :class="className">
+  <div
+    class="grid grid-cols-2 wf"
+    :style="{ gridTemplateColumns: `repeat(${props.columns}, minmax(0, 1fr))` }"
+    :class="className"
+  >
     <div v-for="i in props.forCount" :key="i" class="my3 box-border wf px3.75">
       <wd-skeleton
         animation="gradient"
