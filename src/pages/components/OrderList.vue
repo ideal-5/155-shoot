@@ -53,7 +53,12 @@ function queryList(pageNo: number, pageSize: number) {
       @query="queryList"
     >
       <div class="box-border wf px3.75">
-        <div v-for="item in dataList" :key="item.id" class="mt3 box-border wf b-rd-2 bg-#fff py2">
+        <div
+          v-for="item in dataList"
+          :key="item.id"
+          class="mt3 box-border wf b-rd-2 bg-#fff py2"
+          @click="gotoPage('/pages-sub/order/details', { id: item.id })"
+        >
           <div class="box-border wf f-c justify-between b-b-(1 #F2F3F7 solid) px3 py2">
             <div class="text-(3 #111827) fw500">
               已完成
