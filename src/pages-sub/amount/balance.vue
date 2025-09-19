@@ -49,10 +49,10 @@ function queryList(page?: number, pageSize?: number) {
         0.00
       </div>
       <div class="wf f-c">
-        <wd-button plain type="info" custom-class="flex-1! flex-shrink-0! mr2.75! h10!">
+        <wd-button plain type="info" custom-class="flex-1! flex-shrink-0! mr2.75! h10!" @click="gotoPage('/pages-sub/amount/withdrawal')">
           提现
         </wd-button>
-        <wd-button custom-class="flex-1! flex-shrink-0! h10! bg-#1E88E5!">
+        <wd-button custom-class="flex-1! flex-shrink-0! h10! bg-#1E88E5!" @click="gotoPage('/pages-sub/amount/top-up')">
           充值
         </wd-button>
       </div>
