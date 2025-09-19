@@ -118,7 +118,7 @@ function stopVideo(item: any) {
         </div>
       </div>
 
-      <div class="card">
+      <div class="card" @click="gotoPage('/pages-sub/amount/balance')">
         <div class="title">
           <div>我的钱包</div>
           <div class="more">

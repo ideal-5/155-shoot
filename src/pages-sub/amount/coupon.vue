@@ -76,7 +76,7 @@ const tabList = ref([
 
     <!-- 骨架屏 -->
     <template #loading>
-      <Loading />
+      <Loading :columns="1" :row-col="[[{ width: '100%', height: '100px' }]]" />
     </template>
     <!-- 下拉刷新  -->
     <template #refresher="{ refresherStatus }">
