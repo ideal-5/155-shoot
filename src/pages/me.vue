@@ -137,7 +137,7 @@ function stopVideo(item: any) {
           <div class="more" />
         </div>
         <div class="grid grid-cols-4 wf gap-y-5.75">
-          <div class="wf f-c flex-col text-(3 #111827)">
+          <div class="wf f-c flex-col text-(3 #111827)" @click="gotoPage('/pages-sub/amount/coupon')">
             <image
               :src="`${IMAGE_BASE_URL}/icon/10.png`"
               class="mb1.5 size-6"
