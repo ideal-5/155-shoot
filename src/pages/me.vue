@@ -153,7 +153,7 @@ function stopVideo(item: any) {
             <div>我的足迹</div>
           </div>
 
-          <div class="wf f-c flex-col text-(3 #111827)">
+          <div class="wf f-c flex-col text-(3 #111827)" @click="gotoPage('/pages-sub/amount/distribution')">
             <image
               :src="`${IMAGE_BASE_URL}/icon/5.png`"
               class="mb1.5 size-6"
