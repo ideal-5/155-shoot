@@ -169,7 +169,7 @@ function stopVideo(item: any) {
             <div>分享朋友圈</div>
           </div>
 
-          <div class="wf f-c flex-col text-(3 #111827)">
+          <div class="wf f-c flex-col text-(3 #111827)" @click="gotoPage('/pages-sub/me/city-agent')">
             <image
               :src="`${IMAGE_BASE_URL}/icon/12.png`"
               class="mb1.5 size-6"

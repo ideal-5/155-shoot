@@ -14,6 +14,7 @@ interface Props {
   isBackIconFill?: boolean
   isShowBackIcon?: boolean
   zIndex?: number
+  className?: string
 }
 const props = withDefaults(defineProps<Props>(), {
   barColor: 'transparent',
@@ -101,7 +102,7 @@ const opacity = computed(() => {
 </script>
 
 <template>
-  <div class="layout" :style="{ zIndex: props.zIndex }">
+  <div class="layout" :class="props.className" :style="{ zIndex: props.zIndex }">
     <div class="navbar">
       <!-- 背景 -->
       <div class="navbar-bj" :class="navbarBjClass" :style="{ opacity, background }" />
