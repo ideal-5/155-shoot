@@ -128,6 +128,20 @@ export default defineManifestConfig({
     optimization: {
       subPackages: true,
     },
+    permission: {
+      'scope.userLocation': {
+        desc: '小程序将使用定位功能',
+      },
+    },
+    requiredPrivateInfos: [
+      'chooseAddress',
+      'chooseLocation',
+      'choosePoi',
+      'getLocation',
+      'onLocationChange',
+      'startLocationUpdateBackground',
+      'startLocationUpdate',
+    ],
     // styleIsolation: 'shared',
     usingComponents: true,
     // __usePrivacyCheck__: true,

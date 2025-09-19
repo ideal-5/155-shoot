@@ -1,7 +1,7 @@
 <script setup lang='ts'>
-// 必须导入需要用到的页面生命周期（即使在当前页面上没有直接使用到）
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
 import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
+// 必须导入需要用到的页面生命周期（即使在当前页面上没有直接使用到）
 
 definePage({
   type: 'home',
@@ -37,6 +37,9 @@ const scrollTop = ref(0)
 onPageScroll((e) => {
   scrollTop.value = e.scrollTop
 })
+
+const cityStore = useCityStore()
+const { cityRead } = storeToRefs(cityStore)
 </script>
 
 <template>
@@ -54,7 +57,7 @@ onPageScroll((e) => {
             <div class="w-fit f-c flex-shrink-0 text-(3.75 #3D3D3D) fw500">
               <i class="i-line-md:map-marker-loop" />
               <div class="ml1">
-                西安市
+                {{ cityRead.city }}
               </div>
             </div>
             <div class="ml1 box-border hf min-w-0 f-c flex-1 pl10">
