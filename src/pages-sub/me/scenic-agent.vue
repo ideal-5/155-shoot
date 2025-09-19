@@ -1,21 +1,23 @@
 <script setup lang='ts'>
+const { bottomStyle, bottomHeightNum } = useStyle().absoluteBottom(120)
+
 const activeAddress = ref<[string, string]>(['', ''])
 
 const from = ref({
   phone: '19121140161',
 })
 
-const review = ref(false)
+const review = ref(true)
 </script>
 
 <template>
-  <div class="min-h-100vh w100vw bg-#F7F7F7">
+  <div class="min-h-100vh w100vw bg-#F7F7F7" :style="{ paddingBottom: `${bottomHeightNum + 10}px` }">
     <NavBar is-empty-fill class-name="text-#fff">
-      城市代理
+      景区入驻
     </NavBar>
 
     <image
-      :src="`${IMAGE_BASE_URL}/bg/3.png`"
+      :src="`${IMAGE_BASE_URL}/bg/22.png`"
       class="relative z1 wf"
       mode="widthFix"
     />
@@ -48,18 +50,31 @@ const review = ref(false)
               联系电话：15035694423
             </div>
             <div class="box-border wf py2">
-              申请身份：城市代理
+              景区名称：这是名称
             </div>
             <div class="box-border wf py2">
               当前城市：北京市
             </div>
-          </div>
-        </div>
 
-        <div class="mt7.5 box-border wf">
-          <wd-button custom-class="bg-#1E88E5! h11.75! wf!">
-            我知道了
-          </wd-button>
+            <div class="box-border wf py2">
+              <div>
+                景区资质：
+              </div>
+              <template v-for="i in 4" :key="i">
+                <WImage
+                  custom-class="wf mt2.5 b-rd-1.5! overflow-hidden!"
+                  mode="widthFix"
+                  src="https://dummyimage.com/600x400/000/fff"
+                />
+              </template>
+            </div>
+          </div>
+
+          <div :style="bottomStyle" class="box-border wf f-c-c bg-#F7F7F7 px9.5">
+            <wd-button custom-class="wf! h11.25! bg-#1E88E5!">
+              我知道了
+            </wd-button>
+          </div>
         </div>
       </template>
 
@@ -114,11 +129,37 @@ const review = ref(false)
             </picker>
           </div>
 
+          <Follow>
+            <div class="box-border wf b-rd-2 bg-#fff px5.75 py3">
+              <div class="mb3 text-(3.75 #111827) fw500">
+                景区名称
+              </div>
+              <FollowInput
+                no-border
+                placeholder="请填写景区名称"
+                custom-class="b-(solid! 1! #D9D9D9!) h10! b-rd-1! box-border! px4.75! f-c!"
+              />
+            </div>
+          </Follow>
+
           <div class="box-border wf b-rd-2 bg-#fff px5.75 py3">
-            <wd-button custom-class="wf! h11.25! bg-#1E88E5!">
-              申请成为推广员
-            </wd-button>
+            <div class="mb3 text-(3.75 #111827) fw500">
+              景区资质
+            </div>
+
+            <div class="box-border wf f-c-c flex-col b-rd-1 bg-#F2F3F7 py5 text-#A0AEC0 fw500">
+              <i class="i-line-md:plus text-7" />
+              <div class="mt1.75 text-3">
+                点击上传资质
+              </div>
+            </div>
           </div>
+        </div>
+
+        <div :style="bottomStyle" class="box-border wf f-c-c bg-#F7F7F7 px9.5">
+          <wd-button custom-class="wf! h11.25! bg-#1E88E5!">
+            申请成为推广员
+          </wd-button>
         </div>
       </template>
     </div>
