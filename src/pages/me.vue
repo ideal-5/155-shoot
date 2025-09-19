@@ -194,7 +194,7 @@ function stopVideo(item: any) {
         </div>
 
         <div class="grid grid-cols-4 wf gap-y-5.75">
-          <div class="wf f-c flex-col text-(3 #111827)">
+          <div class="wf f-c flex-col text-(3 #111827)" @click="gotoPage('/pages-sub/settings/feedback')">
             <image
               :src="`${IMAGE_BASE_URL}/icon/15.png`"
               class="mb1.5 size-6"
@@ -202,7 +202,7 @@ function stopVideo(item: any) {
             <div>意见反馈</div>
           </div>
 
-          <div class="wf f-c flex-col text-(3 #111827)">
+          <div class="wf f-c flex-col text-(3 #111827)" @click="gotoPage('/pages-sub/settings/settings')">
             <image
               :src="`${IMAGE_BASE_URL}/icon/4.png`"
               class="mb1.5 size-6"
