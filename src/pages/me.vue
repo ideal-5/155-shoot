@@ -145,7 +145,7 @@ function stopVideo(item: any) {
             <div>优惠券</div>
           </div>
 
-          <div class="wf f-c flex-col text-(3 #111827)">
+          <div class="wf f-c flex-col text-(3 #111827)" @click="gotoPage('/pages-sub/me/footprints')">
             <image
               :src="`${IMAGE_BASE_URL}/icon/24.png`"
               class="mb1.5 size-6"
