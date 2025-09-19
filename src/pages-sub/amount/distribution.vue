@@ -25,7 +25,7 @@
             2689
           </div>
         </div>
-        <div class="box-border min-w-0 flex-1 flex-shrink-0 pl5.5">
+        <div class="box-border min-w-0 flex-1 flex-shrink-0 pl5.5" @click="gotoPage('/pages-sub/amount/distribution-team')">
           <div class="mb1.5 f-c text-(3 #111827) fw500">
             <span>我的团队</span>
             <i class="i-line-md:chevron-small-right" />
