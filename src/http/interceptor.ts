@@ -4,7 +4,8 @@ import { platform } from '@/utils/platform'
 import { stringifyQuery } from './tools/queryString'
 
 // 请求基准地址
-const baseUrl = getEnvBaseUrl()
+// const baseUrl = getEnvBaseUrl()
+const baseUrl = import.meta.env.VITE_SERVER_BASEURL
 
 // 拦截器配置
 const httpInterceptor = {

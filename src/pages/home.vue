@@ -1,7 +1,8 @@
 <script setup lang='ts'>
-import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
-import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
 // 必须导入需要用到的页面生命周期（即使在当前页面上没有直接使用到）
+import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
+import { useRequest } from 'alova/client'
+import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
 
 definePage({
   type: 'home',
@@ -45,8 +46,8 @@ const { cityRead } = storeToRefs(cityStore)
 <template>
   <div class="relative min-h100vh wf bg-#F2F3F7">
     <image
-      src=""
-      class="absolute left-0 top-0 z1 h57.75 wf bg-blueGray"
+      :src="`${IMAGE_BASE_URL}/bg/25.png`"
+      class="absolute left-0 top-0 z1 wf"
       mode="widthFix"
     />
 

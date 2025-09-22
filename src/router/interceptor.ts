@@ -1,5 +1,5 @@
 import { isMp } from '@uni-helper/uni-env'
-import { useUserStore } from '@/store/user'
+// import { useUserStore } from '@/store/user'
 /**
  * by 菲鸽 on 2025-08-19
  * 路由拦截，通常也是登录拦截
@@ -52,26 +52,26 @@ export const navigateToInterceptor = {
       return true // 明确表示允许路由继续执行
     }
 
-    const userStore = useUserStore()
-    FG_LOG_ENABLE && console.log('userStore.hasLogin:', userStore.hasLogin)
+    // const userStore = useUserStore()
+    // FG_LOG_ENABLE && console.log('userStore.hasLogin:', userStore.hasLogin)
 
     // 不管黑白名单，登录了就直接去吧（但是当前不能是登录页）
-    if (userStore.hasLogin) {
-      if (path !== LOGIN_PAGE) {
-        return true // 明确表示允许路由继续执行
-      }
-      else {
-        console.log('已经登录，但是还在登录页', myQuery.redirect)
-        const url = myQuery.redirect || HOME_PAGE
-        if (isPageTabbar(url)) {
-          uni.switchTab({ url })
-        }
-        else {
-          uni.navigateTo({ url })
-        }
-        return false // 明确表示阻止原路由继续执行
-      }
-    }
+    // if (userStore.hasLogin) {
+    //   if (path !== LOGIN_PAGE) {
+    //     return true // 明确表示允许路由继续执行
+    //   }
+    //   else {
+    //     console.log('已经登录，但是还在登录页', myQuery.redirect)
+    //     const url = myQuery.redirect || HOME_PAGE
+    //     if (isPageTabbar(url)) {
+    //       uni.switchTab({ url })
+    //     }
+    //     else {
+    //       uni.navigateTo({ url })
+    //     }
+    //     return false // 明确表示阻止原路由继续执行
+    //   }
+    // }
     let fullPath = path
 
     if (Object.keys(myQuery).length) {

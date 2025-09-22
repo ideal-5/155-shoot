@@ -1,12 +1,8 @@
 <script setup lang='ts'>
+import { getLoginOpenIdApi, loginApi } from '@/api'
+
 const toast = useToast()
 const isAgree = ref(false)
-async function getPhoneNumber({ code }) {
-  if (!isAgree.value) {
-    toast.error('请先阅读并同意协议')
-    return
-  }
-}
 
 const pageType = ref('')
 
@@ -15,6 +11,28 @@ onLoad(({ type }) => {
 })
 function tapBack() {
   uni.navigateBack()
+}
+
+const openid = ref('')
+onLoad(() => {
+  getOpenId()
+})
+
+async function getOpenId() {
+  const { code } = await uni.login()
+  const { openid: a } = await getLoginOpenIdApi(code) as any
+  openid.value = a
+}
+
+async function tapLogin() {
+  if (!isAgree.value) {
+    toast.error('请先阅读并同意协议')
+    return
+  }
+  if (!openid.value) {
+    await getOpenId()
+  }
+  loginApi(openid.value)
 }
 
 /**
@@ -38,8 +56,8 @@ function tapBack() {
     <wd-button
       type="success"
       custom-class="bg-[linear-gradient(180deg,#1E88E5_0%,#80B7E7_100%)]!  wfull! h11! mt13.5 mb5.25"
-      open-type="getPhoneNumber"
       :disabled="!isAgree"
+      @click="tapLogin"
     >
       微信登录
     </wd-button>
