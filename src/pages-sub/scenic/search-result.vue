@@ -76,22 +76,9 @@ function tapSearch() {
         <template #item="{ item }">
           <div
             class="mb1 wf flex flex-col overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff"
-            @click="gotoPage('/pages-sub/scenic/details', { id: 1 })"
+            @click="gotoPage('/pages-sub/scenic/details', { id: item.id })"
           >
             <div class="relative h-fit wf f-c-c">
-              <!-- <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
-                    <image
-                      :src="`${IMAGE_BASE_URL}/bg/18.png`"
-                      class="absolute inset-0 z1"
-                    />
-                    <div class="z2 text-(3.5 #fff) fw500">
-                      {{ item.type }}A
-                    </div>
-                    <div class="z2 text-(3 #fff) fw500">
-                      {{ item.tag }}
-                    </div>
-                  </div> -->
-
               <div class="absolute left-0 top-0 z2 f-c b-rd-br-2.25 bg-#000">
                 <div class="box-border b-rd-br-2.25 bg-[linear-gradient(90deg,#D49150_0%,#F1CB8B_100%)] px2 py0.5 text-(3.5 #fff) fw500">
                   {{ item.type }}A

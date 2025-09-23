@@ -1,25 +1,37 @@
 <script setup lang='ts'>
+import { getScenicListApi, getScenicListSelectApi } from '@/api'
+
 const { closeOutside } = useQueue()
 
+const cityStore = useCityStore()
+const { cityRead } = storeToRefs(cityStore)
+
 const pagingRef = ref<ZPagingRef>()
-const dataList = ref<Awaited<ReturnType<typeof getTestListApi>>>([])
+const dataList = ref<Awaited<ReturnType<typeof getScenicListApi>>['data']['rows']>([])
 const waterfallRef = ref()
-async function queryList(pageNo: number, pageSize: number) {
-  getTestListApi(pageNo, pageSize)
-    .then((res) => {
-      pagingRef.value.complete(res)
-      waterfallRef.value.render(res, pageNo === 1)
+async function queryList(page: number, limit: number) {
+  getScenicListApi({ page, limit, type: '2', cityCode: cityRead.value.cityCode })
+    .then(({ data }) => {
+      pagingRef.value.complete(data.rows)
+      waterfallRef.value.render(data.rows, page === 1)
     })
     .catch((_res) => {
       pagingRef.value.complete(false)
     })
 }
 
-function tapSearch() {
-  pagingRef.value.reload()
-}
+const scenicListSelect = ref<Awaited<ReturnType<typeof getScenicListSelectApi>>>([])
+const activeScenicSelectId = ref('')
 
-const value1 = ref(0)
+onLoad(async () => {
+  const data = await getScenicListSelectApi()
+  scenicListSelect.value = data
+  activeScenicSelectId.value = data?.[0]?.value
+})
+
+function activeScenicSelectChange({ value }: { value: string | number }) {
+  gotoPage('/pages-sub/scenic/details', { id: `${value}` })
+}
 </script>
 
 <template>
@@ -31,7 +43,7 @@ const value1 = ref(0)
   >
     <template #top>
       <div class="box-border wf bg-#fff px3.75">
-        <NavBar>搜索</NavBar>
+        <NavBar>热门景点</NavBar>
         <div class="box-border wf f-c justify-between py2.25" @click="closeOutside">
           <!-- custom-input-class="h7.25!" -->
           <div class="f-c">
@@ -53,11 +65,9 @@ const value1 = ref(0)
 
           <wd-drop-menu>
             <wd-drop-menu-item
-              v-model="value1" :options="[
-                { label: '全部商品', value: 0 },
-                { label: '阆中南津关古镇', value: 1 },
-                { label: '活动商品', value: 2 },
-              ]"
+              v-model="activeScenicSelectId"
+              :options="scenicListSelect"
+              @change="activeScenicSelectChange"
             />
           </wd-drop-menu>
         </div>
@@ -73,32 +83,32 @@ const value1 = ref(0)
         :list="dataList"
       >
         <template #item="{ item }">
-          <div class="mb1 wf overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff">
+          <div
+            class="mt3 wf flex flex-col overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff"
+            @click="gotoPage('/pages-sub/scenic/details', { id: item.id })"
+          >
             <div class="relative h-fit wf f-c-c">
-              <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
-                <image
-                  :src="`${IMAGE_BASE_URL}/bg/18.png`"
-                  class="absolute inset-0 z1"
-                />
-                <div class="z2 text-(3.5 #fff) fw500">
-                  5A
+              <div class="absolute left-0 top-0 z2 f-c b-rd-br-2.25 bg-#000">
+                <div class="box-border b-rd-br-2.25 bg-[linear-gradient(90deg,#D49150_0%,#F1CB8B_100%)] px2 py0.5 text-(3.5 #fff) fw500">
+                  {{ item.type }}A
                 </div>
-                <div class="z2 text-(3 #fff) fw500">
-                  名胜古迹
+                <div class="box-border px2 py0.5 text-(3 #fff) fw500">
+                  {{ item.tag }}
                 </div>
               </div>
+
               <WImage
                 :src="item.img"
                 mode="widthFix"
                 custom-class="wf!"
               />
             </div>
-            <div class="box-border h20 wf bg-amber p2.5">
+            <div class="box-border h20 wf p2.5">
               <div class="line-clamp-1 mb1.25 wf text-(3.75 #111827) fw500">
                 {{ item.title }}
               </div>
               <div class="line-clamp-2 wf text-(3 #A0AEC0)">
-                {{ item.text }}
+                {{ item.content }}
               </div>
             </div>
           </div>

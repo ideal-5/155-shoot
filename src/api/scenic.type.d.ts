@@ -7,10 +7,18 @@ export type ScenicList = {
   type: string
 }[]
 
+export type ScenicListSelectResult = {
+  title: string
+  id: string
+}[]
+
 export interface ScenicListParams extends Paging {
   cityCode: string
-  title: string
-  type: string
+  title?: string
+  /**
+   * 1推荐 2热门
+   */
+  type: '1' | '2'
 }
 
 export interface ScenicDetail {
