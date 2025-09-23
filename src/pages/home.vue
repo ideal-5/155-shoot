@@ -156,7 +156,7 @@ onPageScroll((e) => {
             <template #item="{ item }">
               <div
                 class="mb1 wf flex flex-col overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff"
-                @click="gotoPage('/pages-sub/scenic/details', { id: 1 })"
+                @click="gotoPage('/pages-sub/scenic/details', { id: item.id })"
               >
                 <div class="relative h-fit wf f-c-c">
                   <!-- <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">

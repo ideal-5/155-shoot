@@ -107,11 +107,41 @@ export const useCityStore = defineStore('city', () => {
     }
   }
 
+  function getDistance(lat2: string | number, lon2: number | string) {
+    const lat1 = Number(location.value.latitude)
+    const lon1 = Number(location.value.longitude)
+    lat2 = Number(lat2)
+    lon2 = Number(lon2)
+
+    const R = 6371e3 // 地球半径 (米)
+    const φ1 = lat1 * Math.PI / 180
+    const φ2 = lat2 * Math.PI / 180
+    const Δφ = (lat2 - lat1) * Math.PI / 180
+    const Δλ = (lon2 - lon1) * Math.PI / 180
+
+    const a
+      = Math.sin(Δφ / 2) * Math.sin(Δφ / 2)
+        + Math.cos(φ1) * Math.cos(φ2)
+        * Math.sin(Δλ / 2) * Math.sin(Δλ / 2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    const distance = R * c // 米
+
+    // 格式化输出
+    if (distance >= 1000) {
+      return `${(distance / 1000).toFixed(1)} km`
+    }
+    else {
+      return `${Math.round(distance)} m`
+    }
+  }
+
   return {
     getCityText,
     getLocation,
     initLocation,
     setCity,
+    getDistance,
     isAuthorize,
     cityRead,
     locationRead,

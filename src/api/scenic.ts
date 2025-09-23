@@ -12,3 +12,8 @@ export function getHomeRecommendScenicApi(params: { cityCode: string }) {
 export function getScenicListApi(params: Scenic.ScenicListParams) {
   return http.post<{ rows: Scenic.ScenicList }>('/scenic/scenicAreaList', params)
 }
+
+// 景区详情
+export function getScenicDetailApi(params: { id: string }) {
+  return http.post<Scenic.ScenicDetail>('/scenic/scenicAreaDetails', params)
+}

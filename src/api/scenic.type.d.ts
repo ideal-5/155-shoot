@@ -12,3 +12,19 @@ export interface ScenicListParams extends Paging {
   title: string
   type: string
 }
+
+export interface ScenicDetail {
+  title: string
+  tag: string
+  content: string
+  type: string
+  banner: string
+  lag: string
+  lon: string
+  signArea: {
+    id: string
+    content: string
+    img: string
+    title: string
+  }[]
+}
