@@ -1,85 +1,84 @@
 import { defineStore } from 'pinia'
 import QQMapWX from '@/common/qqmap-wx-jssdk.js'
 
-interface City {
-  // nation: string
-  province: string
-  city: string
-  district: string
-  cityCode: string
-  // street: string
-}
-interface Location {
-  latitude: number
-  longitude: number
+/** 逆地址解析返回结果 */
+interface ReverseGeocoderResult {
+  message: string
+  request_id: string
+  status: number
+  result: {
+    address: string
+    address_component: {
+      nation: string
+      province: string
+      city: string
+      district: string
+      street: string
+    }
+    ad_info: {
+      city_code: string
+      location: {
+        lat: number
+        lng: number
+      }
+    }
+  }
 }
 
 export const useCityStore = defineStore('city', () => {
   const qqMap = new QQMapWX({
     key: 'KINBZ-35F6L-YQIP4-MN3DQ-M64QJ-BXBIX',
   })
-  const toast = useToast()
 
-  const isAuthorize = ref<boolean>(true) // 是否授权位置信息
+  const isAuthorize = ref<boolean>(false) // 是否授权位置信息
 
-  const city = ref<City>({
-    province: '',
-    city: '',
-    district: '',
-    cityCode: '',
-    //  province: '北京市',
-    // city: '北京市',
-    // district: '东城区',
+  // 地址详情
+  const cityDetails = ref<ReverseGeocoderResult['result']>()
+
+  const location = computed(() => ({
+    latitude: cityDetails.value?.ad_info?.location?.lat || 0,
+    longitude: cityDetails.value?.ad_info?.location?.lng || 0,
+  }))
+
+  const city = computed(() => {
+    const { province = '', city = '', district = '' } = cityDetails.value?.address_component ?? {}
+    return { province, city, district }
   })
-  const cityRead = readonly(city)
-
-  const location = ref<Location>({
-    latitude: 0,
-    longitude: 0,
-    // latitude: 39.91667,
-    // longitude: 116.3975,
-  })
-  const locationRead = readonly(location)
 
   // 逆地址解析
-  const getCityText = ({ latitude, longitude }: Location) => {
-    return new Promise<City>((resolve, reject) => {
+  const getCityText = ({ latitude, longitude }: { latitude: number, longitude: number }) => {
+    return new Promise<ReverseGeocoderResult>((resolve, reject) => {
       qqMap.reverseGeocoder({
         location: { latitude, longitude },
-        success: (res: any) => {
-          console.log('res', res)
-          const { province, city, district } = res.result.address_component
-          const { city_code } = res.result.ad_info
-          resolve({ province, city, district, cityCode: city_code } satisfies City)
-        },
+        success: resolve,
         fail: reject,
       })
     })
   }
 
-  // 地址解析
-  const getLocation = (obj: City) => {
-    return new Promise<Location>((resolve, reject) => {
+  // 根据地名获取坐标
+  const getLocation = (address: string) => {
+    return new Promise<{ latitude: number, longitude: number }>((resolve, reject) => {
       qqMap.geocoder({
-        address: Object.values(obj).join(''),
+        address,
         success: (res: any) => {
           const { lat, lng } = res.result.location
-          resolve({ latitude: lat, longitude: lng } as Location)
+          resolve({ latitude: lat, longitude: lng } as { latitude: number, longitude: number })
         },
         fail: reject,
       })
     })
   }
 
-  // 修改当前位置
-  const setCity = async (obj: City) => {
+  // 通过地名修改当前位置
+  const setCity = async (address: string) => {
     try {
-      const res = await getLocation(obj)
-      location.value = res
-      city.value = obj
+      const locationRes = await getLocation(address)
+      const res = await getCityText(locationRes)
+      cityDetails.value = res.result
     }
     catch (error) {
-      toast.error('获取位置坐标失败')
+      throw new Error('修改位置失败')
     }
   }
 
@@ -90,20 +89,18 @@ export const useCityStore = defineStore('city', () => {
       isAuthorize.value = true
     }
     catch (error) {
-      toast.error('位置授权失败')
       isAuthorize.value = false
-      return
+      throw new Error('位置授权失败')
     }
 
     try {
       const { longitude, latitude } = await uni.getLocation({ type: 'wgs84' })
       const res = await getCityText({ latitude, longitude })
-      city.value = res
-      location.value = { longitude, latitude }
+      cityDetails.value = res.result
     }
     catch (error) {
       console.log('error', error)
-      toast.error('获取位置信息失败')
+      throw new Error('获取位置信息失败')
     }
   }
 
@@ -143,8 +140,9 @@ export const useCityStore = defineStore('city', () => {
     setCity,
     getDistance,
     isAuthorize,
-    cityRead,
-    locationRead,
+    cityDetails: computed(() => cityDetails.value),
+    city,
     location,
+    cityCode: computed(() => cityDetails.value?.ad_info?.city_code),
   }
 })

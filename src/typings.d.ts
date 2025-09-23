@@ -17,10 +17,14 @@ declare global {
   }
 
   interface IUserInfo {
-    nickname?: string
-    img?: string
     id?: string
-    amount?: string
+    nickname: string
+    img: string
+    amount: string
+    /** 城市代理是否申请 */
+    agent_apply: -1 | 1
+    /** 景区入驻是否申请 */
+    business_apply: -1 | 1
   }
 
   interface IdentityInfo {

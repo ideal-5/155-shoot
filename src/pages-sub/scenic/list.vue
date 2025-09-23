@@ -4,13 +4,13 @@ import { getScenicListApi, getScenicListSelectApi } from '@/api'
 const { closeOutside } = useQueue()
 
 const cityStore = useCityStore()
-const { cityRead } = storeToRefs(cityStore)
+const { cityCode } = storeToRefs(cityStore)
 
 const pagingRef = ref<ZPagingRef>()
 const dataList = ref<Awaited<ReturnType<typeof getScenicListApi>>['data']['rows']>([])
 const waterfallRef = ref()
 async function queryList(page: number, limit: number) {
-  getScenicListApi({ page, limit, type: '2', cityCode: cityRead.value.cityCode })
+  getScenicListApi({ page, limit, type: '2', cityCode: cityCode.value })
     .then(({ data }) => {
       pagingRef.value.complete(data.rows)
       waterfallRef.value.render(data.rows, page === 1)

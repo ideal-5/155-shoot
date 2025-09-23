@@ -14,12 +14,12 @@ onLoad(async ({ keyword }) => {
 })
 
 const cityStore = useCityStore()
-const { cityRead } = storeToRefs(cityStore)
+const { cityCode } = storeToRefs(cityStore)
 
 const dataList = ref<Awaited<ReturnType<typeof getScenicListApi>>['data']['rows']>([])
 const waterfallRef = ref()
 async function queryList(page: number, limit: number) {
-  getScenicListApi({ page, limit, type: '1', title: val.value, cityCode: cityRead.value.cityCode })
+  getScenicListApi({ page, limit, type: '1', title: val.value, cityCode: cityCode.value })
     .then(({ data }) => {
       pagingRef.value.complete(data.rows)
       waterfallRef.value.render(data.rows, page === 1)

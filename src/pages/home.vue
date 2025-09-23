@@ -18,7 +18,13 @@ onLoad(async () => {
 })
 
 const cityStore = useCityStore()
-const { cityRead } = storeToRefs(cityStore)
+const { city, cityCode } = storeToRefs(cityStore)
+
+const cityList = computed(() => [city.value.province, city.value.city, city.value.district])
+
+function addressChange(e: { detail: { value: string[] } }) {
+  cityStore.setCity(e.detail.value.join(''))
+}
 
 const pagingRef = ref()
 useZPaging(pagingRef)
@@ -29,7 +35,7 @@ async function queryList(pageNo: number) {
   if (pageNo > 1) {
     return
   }
-  getHomeRecommendScenicApi({ cityCode: cityRead.value.cityCode })
+  getHomeRecommendScenicApi({ cityCode: cityCode.value })
     .then(({ data }) => {
       pagingRef.value.complete(data)
       waterfallRef.value.render(data, pageNo === 1)
@@ -63,10 +69,20 @@ onPageScroll((e) => {
         <template #left>
           <div class="box-border size-full f-c justify-between pl3.75 pr1.75">
             <div class="w-fit f-c flex-shrink-0 text-(3.75 #3D3D3D) fw500">
-              <i class="i-line-md:map-marker-loop" />
-              <div class="ml1">
-                {{ cityRead.city }}
-              </div>
+              <picker
+                mode="region"
+                level="city"
+                :value="cityList"
+                class="grid grid-cols-1 wf"
+                @change="addressChange"
+              >
+                <div class="wf f-c">
+                  <i class="i-line-md:map-marker-loop" />
+                  <div class="ml1">
+                    {{ city.city }}
+                  </div>
+                </div>
+              </picker>
             </div>
             <div class="ml1 box-border hf min-w-0 f-c flex-1 pl10">
               <div
