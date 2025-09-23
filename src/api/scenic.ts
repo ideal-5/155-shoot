@@ -7,3 +7,8 @@ export type { Scenic }
 export function getHomeRecommendScenicApi(params: { cityCode: string }) {
   return http.post<Scenic.ScenicList>('/index/index', params)
 }
+
+// 景区列表
+export function getScenicListApi(params: Scenic.ScenicListParams) {
+  return http.post<{ rows: Scenic.ScenicList }>('/scenic/scenicAreaList', params)
+}

@@ -6,3 +6,9 @@ export type ScenicList = {
   title: string
   type: string
 }[]
+
+export interface ScenicListParams extends Paging {
+  cityCode: string
+  title: string
+  type: string
+}

@@ -37,6 +37,8 @@ async function render(list: T[], reset = false) {
       item.height = 0
       item.list = []
     })
+    temList.value = []
+    await nextTick()
   }
   temList.value = list
 }

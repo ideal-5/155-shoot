@@ -25,6 +25,11 @@ declare global {
     userId: number | string
     userToken: string
   }
+
+  interface Paging {
+    limit: number
+    page: number
+  }
 }
 
 // patch uni 类型

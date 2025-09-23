@@ -1,4 +1,6 @@
 <script setup lang='ts'>
+import { getScenicListApi } from '@/api'
+
 const val = ref('')
 const pagingRef = ref<ZPagingRef>()
 
@@ -11,13 +13,16 @@ onLoad(async ({ keyword }) => {
   pagingRef.value.reload()
 })
 
-const dataList = ref<Awaited<ReturnType<typeof getTestListApi>>>([])
+const cityStore = useCityStore()
+const { cityRead } = storeToRefs(cityStore)
+
+const dataList = ref<Awaited<ReturnType<typeof getScenicListApi>>['data']['rows']>([])
 const waterfallRef = ref()
-async function queryList(pageNo: number, pageSize: number) {
-  getTestListApi(pageNo, pageSize, 30000)
-    .then((res) => {
-      pagingRef.value.complete(res)
-      waterfallRef.value.render(res, pageNo === 1)
+async function queryList(page: number, limit: number) {
+  getScenicListApi({ page, limit, type: '1', title: val.value, cityCode: cityRead.value.cityCode })
+    .then(({ data }) => {
+      pagingRef.value.complete(data.rows)
+      waterfallRef.value.render(data.rows, page === 1)
     })
     .catch((_res) => {
       pagingRef.value.complete(false)
@@ -69,20 +74,33 @@ function tapSearch() {
         :list="dataList"
       >
         <template #item="{ item }">
-          <div class="mb1 wf overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff">
+          <div
+            class="mb1 wf flex flex-col overflow-hidden b-rd-2.25 b-rd-tl-3 bg-#fff"
+            @click="gotoPage('/pages-sub/scenic/details', { id: 1 })"
+          >
             <div class="relative h-fit wf f-c-c">
-              <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
-                <image
-                  :src="`${IMAGE_BASE_URL}/bg/18.png`"
-                  class="absolute inset-0 z1"
-                />
-                <div class="z2 text-(3.5 #fff) fw500">
-                  5A
+              <!-- <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
+                    <image
+                      :src="`${IMAGE_BASE_URL}/bg/18.png`"
+                      class="absolute inset-0 z1"
+                    />
+                    <div class="z2 text-(3.5 #fff) fw500">
+                      {{ item.type }}A
+                    </div>
+                    <div class="z2 text-(3 #fff) fw500">
+                      {{ item.tag }}
+                    </div>
+                  </div> -->
+
+              <div class="absolute left-0 top-0 z2 f-c b-rd-br-2.25 bg-#000">
+                <div class="box-border b-rd-br-2.25 bg-[linear-gradient(90deg,#D49150_0%,#F1CB8B_100%)] px2 py0.5 text-(3.5 #fff) fw500">
+                  {{ item.type }}A
                 </div>
-                <div class="z2 text-(3 #fff) fw500">
-                  名胜古迹
+                <div class="box-border px2 py0.5 text-(3 #fff) fw500">
+                  {{ item.tag }}
                 </div>
               </div>
+
               <WImage
                 :src="item.img"
                 mode="widthFix"
@@ -94,7 +112,7 @@ function tapSearch() {
                 {{ item.title }}
               </div>
               <div class="line-clamp-2 wf text-(3 #A0AEC0)">
-                {{ item.text }}
+                {{ item.content }}
               </div>
             </div>
           </div>

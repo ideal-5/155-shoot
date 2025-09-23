@@ -17,6 +17,11 @@ async function tapSearch() {
   }
 }
 
+function tapHistoryItem(item: (typeof searchHistory.value)[number]) {
+  val.value = item
+  tapSearch()
+}
+
 const message = useMessage()
 function tapDeleteAll() {
   message
@@ -64,11 +69,12 @@ function tapDeleteAll() {
         v-for="(text, index) in searchHistory"
         :key="index"
         class="mb2 mr1.25 box-border max-w-full w-fit f-c b-rd-full bg-#F6F7F9 px2 py1 text-(3 #111827)"
+        @click="tapHistoryItem(text)"
       >
         <div class="line-clamp-1 min-w-0 flex-1">
           {{ text }}
         </div>
-        <div class="ml2 w5 flex-shrink-0" @click="searchHistoryStore.deleteSearchHistory(text)">
+        <div class="ml2 w5 flex-shrink-0" @click.stop="searchHistoryStore.deleteSearchHistory(text)">
           <i class="i-line-md:close" />
         </div>
       </div>
