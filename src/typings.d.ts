@@ -18,7 +18,9 @@ declare global {
 
   interface IUserInfo {
     nickname?: string
-    avatar?: string
+    img?: string
+    id?: string
+    amount?: string
   }
 
   interface IdentityInfo {

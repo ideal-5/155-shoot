@@ -35,18 +35,20 @@ function stopVideo(item: any) {
   item.isPlay = false
   uni.createVideoContext(`video${item.id}`).pause()
 }
+
+const { userInfo } = storeToRefs(useUserStore())
 </script>
 
 <template>
   <div class="min-h100vh wf bg-[linear-gradient(to_bottom,#1E88E5,#F2F3F7_610rpx)]">
     <NavBar />
     <div class="mb5 mt9.25 wf f-c flex-col" @click="gotoPage('/pages-sub/me/me-info')">
-      <WImage custom-class="size-19.25! b-rd-full! overflow-hidden!" src="https://picsum.photos/200/300" />
+      <WImage custom-class="size-19.25! b-rd-full! overflow-hidden!" :src="userInfo?.img" />
       <div class="mb1.5 mt2.5 text-(4.75 #111827) fw500">
-        温润小队长
+        {{ userInfo?.nickname }}
       </div>
       <div class="text-(3 #000000) fw500">
-        ID: 12546236
+        ID: {{ userInfo?.id }}
       </div>
     </div>
 
@@ -127,7 +129,7 @@ function stopVideo(item: any) {
         </div>
 
         <div class="text-(6.5 #111827) fw500">
-          999.999
+          {{ userInfo?.amount }}
         </div>
       </div>
 

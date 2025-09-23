@@ -5,7 +5,8 @@ import { getUserInfoApi } from '@/api'
 // 初始化状态
 const userInfoState: IUserInfo = {
   nickname: '',
-  avatar: '/static/images/default-avatar.png',
+  img: '/static/images/default-avatar.png',
+  amount: '0.00',
 }
 
 const identityInfoState: IdentityInfo = {
@@ -22,7 +23,7 @@ export const useUserStore = defineStore(
     // 定义接口所需的信息 token userid
     const identityInfo = ref<IdentityInfo>({ ...identityInfoState })
 
-    const hasLogin = ref(false)
+    // const hasLogin = ref(false)
 
     // 设置用户身份信息
     const setIdentityInfo = (val: IdentityInfo) => {
@@ -32,8 +33,8 @@ export const useUserStore = defineStore(
     const setUserInfo = (val: IUserInfo) => {
       console.log('设置用户信息', val)
       // 若头像为空 则使用默认头像
-      if (!val.avatar) {
-        val.avatar = userInfoState.avatar
+      if (!val.img) {
+        val.img = userInfoState.img
       }
       userInfo.value = val
     }
@@ -56,7 +57,6 @@ export const useUserStore = defineStore(
 
     return {
       userInfo,
-      hasLogin,
       identityInfo,
       setIdentityInfo,
       clearUserInfo,

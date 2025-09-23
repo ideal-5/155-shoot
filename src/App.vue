@@ -4,11 +4,11 @@ import { navigateToInterceptor } from '@/router/interceptor'
 import 'abortcontroller-polyfill/dist/abortcontroller-polyfill-only'
 
 const systemStore = useSystemStore()
-// const userStore = useUserStore()
+const userStore = useUserStore()
 
 onLaunch((options) => {
   systemStore.initSetSystem()
-  // userStore.refreshUserInfo()
+  userStore.fetchUserInfo()
   console.log('App Launch', options)
 })
 onShow((options) => {
