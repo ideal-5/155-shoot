@@ -23,10 +23,9 @@ declare global {
     openid?: string
   }
 
-  interface IUserToken {
-    token: string
-    refreshToken?: string
-    refreshExpire?: number
+  interface IdentityInfo {
+    userId: number | string
+    userToken: string
   }
 }
 

@@ -1,6 +1,15 @@
 import type { CustomRequestOptions } from '@/http/types'
 
 export function http<T>(options: CustomRequestOptions) {
+  // 接口所需的身份信息
+  const userStore = useUserStore()
+  options.data = options.data || {}
+  Object.keys(userStore.identityInfo || {}).forEach((key) => {
+    if (!options.data?.[key] && userStore.identityInfo?.[key]) {
+      options.data[key] = userStore.identityInfo?.[key]
+    }
+  })
+
   // 1. 返回 Promise 对象
   return new Promise<IResData<T>>((resolve, reject) => {
     uni.request({
