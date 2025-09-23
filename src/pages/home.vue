@@ -3,6 +3,7 @@
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
 import { useRequest } from 'alova/client'
 import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
+import { getConfigBannerApi, getHomeRecommendScenicApi } from '@/api'
 
 definePage({
   type: 'home',
@@ -10,37 +11,43 @@ definePage({
 
 const { menuButtonHeight } = storeToRefs(useSystemStore())
 
-const swiperList = ref([
-  'https://wot-ui.cn/assets/redpanda.jpg',
-  'https://wot-ui.cn/assets/capybara.jpg',
-  'https://wot-ui.cn/assets/panda.jpg',
-  'https://wot-ui.cn/assets/moon.jpg',
-  'https://wot-ui.cn/assets/meng.jpg',
-])
+const swiperList = ref<Awaited<ReturnType<typeof getConfigBannerApi>>['data']>([])
+onLoad(async () => {
+  const { data } = await getConfigBannerApi()
+  swiperList.value = data
+})
+
+const cityStore = useCityStore()
+const { cityRead } = storeToRefs(cityStore)
 
 const pagingRef = ref()
 useZPaging(pagingRef)
-const dataList = ref<Awaited<ReturnType<typeof getTestListApi>>>([])
+const dataList = ref<Awaited<ReturnType<typeof getHomeRecommendScenicApi>>['data']>([])
 
 const waterfallRef = ref()
-async function queryList(pageNo: number, pageSize: number) {
-  getTestListApi(pageNo, pageSize)
-    .then((res) => {
-      pagingRef.value.complete(res)
-      waterfallRef.value.render(res, pageNo === 1)
+async function queryList(pageNo: number) {
+  if (pageNo > 1) {
+    return
+  }
+  getHomeRecommendScenicApi({ cityCode: cityRead.value.cityCode })
+    .then(({ data }) => {
+      pagingRef.value.complete(data)
+      waterfallRef.value.render(data, pageNo === 1)
     })
     .catch((_res) => {
       pagingRef.value.complete(false)
     })
 }
 
+onLoad(async () => {
+  await cityStore.initLocation()
+  pagingRef.value.reload()
+})
+
 const scrollTop = ref(0)
 onPageScroll((e) => {
   scrollTop.value = e.scrollTop
 })
-
-const cityStore = useCityStore()
-const { cityRead } = storeToRefs(cityStore)
 </script>
 
 <template>
@@ -85,7 +92,8 @@ const { cityRead } = storeToRefs(cityStore)
       "
       >
         <wd-swiper
-          :list="swiperList"
+          :list="swiperList as any"
+          value-key="img"
           :duration="600"
           autoplay
           previous-margin="24px"
@@ -137,7 +145,7 @@ const { cityRead } = storeToRefs(cityStore)
           </div>
         </div>
 
-        <z-paging ref="pagingRef" v-model="dataList" :use-page-scroll="true" @query="queryList">
+        <z-paging ref="pagingRef" v-model="dataList" :auto="false" :use-page-scroll="true" @query="queryList">
           <waterfall
             ref="waterfallRef"
             :extra-height="84"
@@ -151,30 +159,40 @@ const { cityRead } = storeToRefs(cityStore)
                 @click="gotoPage('/pages-sub/scenic/details', { id: 1 })"
               >
                 <div class="relative h-fit wf f-c-c">
-                  <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
+                  <!-- <div class="absolute left-0 top-0 box-border h5.5 w22.75 f-c justify-between px1.5">
                     <image
                       :src="`${IMAGE_BASE_URL}/bg/18.png`"
                       class="absolute inset-0 z1"
                     />
                     <div class="z2 text-(3.5 #fff) fw500">
-                      5A
+                      {{ item.type }}A
                     </div>
                     <div class="z2 text-(3 #fff) fw500">
-                      名胜古迹
+                      {{ item.tag }}
+                    </div>
+                  </div> -->
+
+                  <div class="absolute left-0 top-0 z2 f-c b-rd-br-2.25 bg-#000">
+                    <div class="box-border b-rd-br-2.25 bg-[linear-gradient(90deg,#D49150_0%,#F1CB8B_100%)] px2 py0.5 text-(3.5 #fff) fw500">
+                      {{ item.type }}A
+                    </div>
+                    <div class="box-border px2 py0.5 text-(3 #fff) fw500">
+                      {{ item.tag }}
                     </div>
                   </div>
+
                   <WImage
                     :src="item.img"
                     mode="widthFix"
                     custom-class="wf!"
                   />
                 </div>
-                <div class="box-border h20 wf bg-amber p2.5">
+                <div class="box-border h20 wf p2.5">
                   <div class="line-clamp-1 mb1.25 wf text-(3.75 #111827) fw500">
                     {{ item.title }}
                   </div>
                   <div class="line-clamp-2 wf text-(3 #A0AEC0)">
-                    {{ item.text }}
+                    {{ item.content }}
                   </div>
                 </div>
               </div>

@@ -1,2 +1,4 @@
+export * from './config'
 export * from './login'
+export * from './scenic'
 export * from './user'

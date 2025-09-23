@@ -37,6 +37,7 @@ async function tapLogin() {
   const { data: { token, userId } } = await loginApi(openid.value)
   userStore.setIdentityInfo({ userToken: token, userId })
   userStore.fetchUserInfo()
+  uni.switchTab({ url: '/pages/home' })
 }
 
 /**

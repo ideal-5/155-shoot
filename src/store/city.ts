@@ -6,6 +6,7 @@ interface City {
   province: string
   city: string
   district: string
+  cityCode: string
   // street: string
 }
 interface Location {
@@ -25,6 +26,7 @@ export const useCityStore = defineStore('city', () => {
     province: '',
     city: '',
     district: '',
+    cityCode: '',
     //  province: '北京市',
     // city: '北京市',
     // district: '东城区',
@@ -45,8 +47,10 @@ export const useCityStore = defineStore('city', () => {
       qqMap.reverseGeocoder({
         location: { latitude, longitude },
         success: (res: any) => {
+          console.log('res', res)
           const { province, city, district } = res.result.address_component
-          resolve({ province, city, district } as City)
+          const { city_code } = res.result.ad_info
+          resolve({ province, city, district, cityCode: city_code } satisfies City)
         },
         fail: reject,
       })
@@ -81,7 +85,6 @@ export const useCityStore = defineStore('city', () => {
 
   // 初始化当前位置和坐标
   const initLocation = async () => {
-    console.log('initLocation**********')
     try {
       await uni.authorize({ scope: 'scope.userLocation' })
       isAuthorize.value = true
@@ -102,10 +105,6 @@ export const useCityStore = defineStore('city', () => {
       console.log('error', error)
       toast.error('获取位置信息失败')
     }
-  }
-
-  if (isAuthorize.value && !cityRead.value.city) {
-    initLocation()
   }
 
   return {
