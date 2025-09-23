@@ -43,3 +43,16 @@ export interface ScenicSignParams {
   img_str: string
   id: string
 }
+
+export type ScenicMyFootprintList = {
+  id: string
+  imgs: string
+  areaInfo: {
+    img: string
+    id: string
+    type: string
+    tag: string
+    title: string
+    content: string
+  }
+}[]

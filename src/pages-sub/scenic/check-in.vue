@@ -34,11 +34,14 @@ async function tapCheckIn() {
     toast.warning('请上传图片')
     return
   }
-  const { code } = await postScenicSignApi({ img_str: images.value.join(','), id: detail.value?.id })
+  const { code, msg } = await postScenicSignApi({ img_str: images.value.join(','), id: detail.value?.id })
   if (code === 1) {
     uni.redirectTo({
       url: '/pages-sub/scenic/check-in-hint',
     })
+  }
+  else {
+    toast.error(msg)
   }
 }
 </script>

@@ -31,3 +31,13 @@ export function getScenicDetailApi(params: { id: string }) {
 export function postScenicSignApi(params: Scenic.ScenicSignParams) {
   return http.post('/scenic/sign', params)
 }
+
+// 我的足迹（打卡列表）
+export function getScenicMyFootprintApi(params: Paging) {
+  return http.post<{ rows: Scenic.ScenicMyFootprintList }>('/scenic/myFootList', params)
+}
+
+// 足迹详情
+export function getScenicFootprintDetailApi(id: string) {
+  return http.post<Scenic.ScenicMyFootprintList[number]>(`/scenic/myFootDetails`, { id })
+}
