@@ -1,16 +1,45 @@
 <script setup lang='ts'>
+import { getScenicDetailApi, postScenicSignApi } from '@/api'
+
 const { bottomHeightNum, bottomStyle } = useStyle().absoluteBottom(120)
 
-onLoad(({ id }) => {
-  console.log('id', id)
+const detail = ref<Awaited<ReturnType<typeof getScenicDetailApi>>['data']>()
+
+onLoad(async ({ id }) => {
+  const { data } = await getScenicDetailApi({ id })
+  detail.value = data
 })
-const images = ref<string[]>(['https://dummyimage.com/600x400/000/fff'])
+
+const images = ref<string[]>([])
 function deleteImage(index: number) {
   images.value.splice(index, 1)
 }
 
-async function selectImage() {
-  // 456
+const { selectImage, uploadImgs } = useUploadImg()
+const toast = useToast()
+async function tapSelectImage() {
+  try {
+    const count = 6 - images.value.length
+    const imgs = await selectImage(count)
+    const res = await uploadImgs(imgs.tempFiles.map(item => item.tempFilePath))
+    images.value.push(...res.map(i => i.url))
+  }
+  catch (error) {
+    toast.error('图片上传失败')
+  }
+}
+
+async function tapCheckIn() {
+  if (images.value.length < 1) {
+    toast.warning('请上传图片')
+    return
+  }
+  const { code } = await postScenicSignApi({ img_str: images.value.join(','), id: detail.value?.id })
+  if (code === 1) {
+    uni.redirectTo({
+      url: '/pages-sub/scenic/check-in-hint',
+    })
+  }
 }
 </script>
 
@@ -20,17 +49,17 @@ async function selectImage() {
     <div
       class="mt3 box-border wf flex b-rd-2.5 px3.75 py3"
     >
-      <WImage custom-class="size-21.25! b-rd-1.25! overflow-hidden flex-shrink-0!" src="https://dummyimage.com/600x600/004643/fff" />
+      <WImage custom-class="size-21.25! b-rd-1.25! overflow-hidden flex-shrink-0!" :src="detail?.img" />
       <div class="ml2.5 box-border h21.25 min-w0 flex flex-1 flex-col justify-between">
         <div class="line-clamp-2">
-          <span class="mr1.5 text-(3.75 #111827) fw500">石林景区</span>
-          <span class="box-border b-rd-0.5 bg-#F1F1FE px1.75 py0.5 text-(3 #3C6292)">5A</span>
+          <span class="mr1.5 text-(3.75 #111827) fw500">{{ detail?.title }}</span>
+          <span class="box-border b-rd-0.5 bg-#F1F1FE px1.75 py0.5 text-(3 #3C6292)">{{ detail?.type }}A</span>
         </div>
         <div class="box-border w-fit b-(1 #E7E7E7 rd-0.25 solid) px1.75 py0.5 text-(2.5 #525456)">
-          自然风光
+          {{ detail?.tag }}
         </div>
         <div class="line-clamp-2 text-(3 #A0AEC0)">
-          这是文字内容，字色#A0AEC0。这是文字内容，字色#A0AEC0。这是文字内容，字色这是文字内容，字色#A0AEC0。这是文字内容，字色#A0AEC0。这是文字内容，字色...
+          {{ detail?.content }}
         </div>
       </div>
     </div>
@@ -50,7 +79,7 @@ async function selectImage() {
           </div>
           <WImage custom-class="size-full!" :src="img" />
         </div>
-        <div v-if="images.length < 6" class="aspect-1/1 wf" @click="selectImage">
+        <div v-if="images.length < 6" class="aspect-1/1 wf" @click="tapSelectImage">
           <image
             :src="`${IMAGE_BASE_URL}/bg/13.png`"
             class="size-full"
@@ -60,7 +89,7 @@ async function selectImage() {
     </div>
 
     <div :style="bottomStyle" class="box-border f-c-c bg-#fff px4.5">
-      <wd-button custom-class="wf! h11! bg-#1E88E5!" @click="gotoPage('/pages-sub/scenic/check-in-hint', { id: '5' })">
+      <wd-button custom-class="wf! h11! bg-#1E88E5!" @click="tapCheckIn">
         完成打卡
       </wd-button>
     </div>

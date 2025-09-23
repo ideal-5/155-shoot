@@ -22,6 +22,7 @@ export interface ScenicListParams extends Paging {
 }
 
 export interface ScenicDetail {
+  id: string
   title: string
   tag: string
   content: string
@@ -29,10 +30,16 @@ export interface ScenicDetail {
   banner: string
   lag: string
   lon: string
+  img: string
   signArea: {
     id: string
     content: string
     img: string
     title: string
   }[]
+}
+
+export interface ScenicSignParams {
+  img_str: string
+  id: string
 }

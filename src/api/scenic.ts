@@ -26,3 +26,8 @@ export async function getScenicListSelectApi(params?: { cityCode?: string }) {
 export function getScenicDetailApi(params: { id: string }) {
   return http.post<Scenic.ScenicDetail>('/scenic/scenicAreaDetails', params)
 }
+
+// 景区打卡
+export function postScenicSignApi(params: Scenic.ScenicSignParams) {
+  return http.post('/scenic/sign', params)
+}

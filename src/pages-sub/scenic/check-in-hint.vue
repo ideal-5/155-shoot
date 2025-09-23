@@ -1,5 +1,7 @@
 <script setup lang='ts'>
-
+function tapGoBack() {
+  uni.navigateBack()
+}
 </script>
 
 <template>
@@ -8,7 +10,7 @@
 
     <div class="mt24 wf f-c flex-col">
       <image
-        :src="`${IMAGE_BASE_URL}/icon/42.png`"
+        :src="`${IMAGE_BASE_URL}/icon/40.png`"
         class="size-16.25"
       />
       <div class="mb3.25 mt2.75 text-(4.5 #111827)">
@@ -18,10 +20,10 @@
         可在 我的-我的足迹 查看
       </div>
 
-      <wd-button custom-class="w44! h11! mb4.5 bg-#1E88E5 text-(3.75!) fw500!">
+      <wd-button custom-class="w44! h11! mb4.5 bg-#1E88E5 text-(3.75!) fw500!" @click="tapGoBack">
         我知道了
       </wd-button>
-      <wd-button type="info" plain custom-class="w44! h11! text-(3.75! #111827!) fw500!">
+      <wd-button type="info" plain custom-class="w44! h11! text-(3.75! #111827!) fw500!" @click="gotoPage('/pages-sub/me/footprints')">
         去查看
       </wd-button>
     </div>

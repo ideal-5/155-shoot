@@ -81,7 +81,7 @@ onLoad(async ({ id }) => {
     </div>
 
     <div :style="bottomStyle" class="box-border f-c-c bg-#fff px4.5">
-      <wd-button custom-class="wf! h11! bg-#1E88E5!" @click="gotoPage('/pages-sub/scenic/check-in', { id: '5' })">
+      <wd-button custom-class="wf! h11! bg-#1E88E5!" @click="gotoPage('/pages-sub/scenic/check-in', { id: detail?.id })">
         景点打卡
       </wd-button>
     </div>
