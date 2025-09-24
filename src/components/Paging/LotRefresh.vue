@@ -1,7 +1,7 @@
 <!-- z-paging自定义的下拉刷新view -->
 
 <script setup lang="ts">
-const props = defineProps<{ status: string }>()
+const props = defineProps<{ status: string, className?: string }>()
 
 const text = computed(() => {
   // 这里可以做i18n国际化相关操作，可以通过uni.getLocale()获取当前语言(具体操作见i18n-demo.vue);
@@ -17,7 +17,7 @@ const text = computed(() => {
 </script>
 
 <template>
-  <div class="refresher-container">
+  <div class="refresher-container" :class="[props.className || '']">
     <!-- 这里的图片请换成自己项目的图片 -->
     <!-- <image class="refresher-image" mode="aspectFit" src="https://picsum.photos/200"></image> -->
     <i class="i-svg-spinners:blocks-shuffle-3" />

@@ -12,3 +12,13 @@ export function amountCreateOrderApi(amount: number) {
 export function amountMyCouponListApi(status: -1 | 1) {
   return http.post<Amount.CouponList>('/user/couponLists', { status })
 }
+
+// 分销中心
+export function amountDistributionCenterApi(params: Paging) {
+  return http.post<{ all_amount: string, all_nums: string, rows: Amount.DistributionCenterList }>('/user/myTeamRecord', params)
+}
+
+// 我的团队列表
+export function amountMyTeamListApi(params: Paging) {
+  return http.post<{ all_amount: string, rows: Amount.MyTeamList }>('/user/myTeam', params)
+}

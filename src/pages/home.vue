@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 // 必须导入需要用到的页面生命周期（即使在当前页面上没有直接使用到）
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
-import { useRequest } from 'alova/client'
 import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
 import { getConfigBannerApi, getHomeRecommendScenicApi } from '@/api'
 
