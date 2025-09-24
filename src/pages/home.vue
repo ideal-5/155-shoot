@@ -33,6 +33,7 @@ const dataList = ref<Awaited<ReturnType<typeof getHomeRecommendScenicApi>>['data
 const waterfallRef = ref()
 async function queryList(pageNo: number) {
   if (pageNo > 1) {
+    pagingRef.value.complete([])
     return
   }
   getHomeRecommendScenicApi({ cityCode: cityCode.value })

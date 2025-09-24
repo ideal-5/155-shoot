@@ -1,23 +1,35 @@
 <script setup lang='ts'>
-const pagingRef = ref<ZPagingRef>()
-const dataList = ref<Awaited<ReturnType<typeof getTestListApi>>>([])
+import { amountMyCouponListApi } from '@/api'
 
-async function queryList(pageNo: number, pageSize: number) {
-  getTestListApi(pageNo, pageSize)
-    .then((res) => {
-      pagingRef.value.complete(res)
+const activeTab = ref(0)
+
+const tabList = ref([
+  { label: '未使用', id: -1 },
+  { label: '已使用', id: 1 },
+] as const)
+
+const pagingRef = ref<ZPagingRef>()
+const dataList = ref<Awaited<ReturnType<typeof amountMyCouponListApi>>['data']>([])
+
+async function queryList(page: number) {
+  if (page > 1) {
+    pagingRef.value.complete([])
+    return
+  }
+  amountMyCouponListApi(tabList.value[activeTab.value].id)
+    .then(({ data }) => {
+      console.log('data', data)
+      pagingRef.value.complete(data)
     })
     .catch((_res) => {
       pagingRef.value.complete(false)
     })
 }
 
-const activeTab = ref(0)
-
-const tabList = ref([
-  { label: '未使用', id: 1 },
-  { label: '已使用', id: 2 },
-])
+async function tabChange() {
+  await nextTick()
+  pagingRef.value.reload()
+}
 </script>
 
 <template>
@@ -32,7 +44,7 @@ const tabList = ref([
         优惠券
       </NavBar>
 
-      <wd-tabs v-model="activeTab">
+      <wd-tabs v-model="activeTab" @change="tabChange">
         <block v-for="item in tabList" :key="item.id">
           <wd-tab :title="item.label" />
         </block>
@@ -40,17 +52,17 @@ const tabList = ref([
     </template>
 
     <div class="box-border wf px3.75">
-      <div v-for="item in dataList" :key="item.id" class="mt2.5 box-border wf flex b-rd-2 bg-#fff px3 py2.5">
+      <div v-for="item in dataList" :key="item.cid" class="mt2.5 box-border wf flex b-rd-2 bg-#fff px3 py2.5">
         <div
-          class="mr3.25 h19 w24 f-c-c flex-col b-rd-1.25 text-#fff fw500"
+          class="mr3.25 h19 w30 f-c-c flex-col b-rd-1.25 text-#fff fw500"
           :class="[activeTab === 1 ? 'bg-#A6ABB2' : 'bg-[linear-gradient(133deg,#3081F6_0%,#5CB7FB_100%)]']"
         >
           <div>
             <span class="text-3.5">￥</span>
-            <span class="text-7.25">10</span>
+            <span class="text-7.25">{{ item.amount }}</span>
           </div>
           <div class="text-2.75">
-            无门槛
+            {{ Number(item.rank) === 0 ? '无门槛' : `满${item.rank}元可用` }}
           </div>
         </div>
 
@@ -59,8 +71,8 @@ const tabList = ref([
             <div class="text-(3.5 #3D3D3D) fw500">
               {{ item.title }}
             </div>
-            <div>仅用于视频优惠</div>
-            <div>2028.06.24-2029.06.24</div>
+            <div>{{ item.goods_type_str }}</div>
+            <div>{{ item.end_time }}</div>
           </div>
 
           <div class="ml2 hf w15 f-c-c flex-shrink-0">
