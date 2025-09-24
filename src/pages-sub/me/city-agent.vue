@@ -49,11 +49,16 @@ watch(() => isApply.value, (nVal) => {
     getApplyDetail()
   }
 }, { immediate: true })
+
+const scrollTop = ref(0)
+onPageScroll((e) => {
+  scrollTop.value = e.scrollTop
+})
 </script>
 
 <template>
   <div class="min-h-100vh w100vw bg-#F7F7F7">
-    <NavBar is-empty-fill class-name="text-#fff">
+    <NavBar bar-color="#519FF8" :scroll-top="scrollTop" is-empty-fill class-name="text-#fff">
       城市代理
     </NavBar>
 

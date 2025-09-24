@@ -16,14 +16,15 @@ export function useUploadImg() {
   }
 
   function uploadImg(url: string) {
-    return new Promise<{ url: string, size: number }>((resolve, reject) => {
+    return new Promise<{ url: string }>((resolve, reject) => {
       uni.uploadFile({
         url: import.meta.env.VITE_UPLOAD_BASEURL,
         filePath: url,
         name: 'image',
         success: (uploadFileRes) => {
-          const data = JSON.parse(uploadFileRes.data) as { data: { url: string, size: number } }
-          resolve(data.data)
+          // const data = JSON.parse(uploadFileRes.data) as { data: { url: string, size: number } }
+          const data = JSON.parse(uploadFileRes.data) as { src: string }
+          resolve({ url: data.src })
         },
         fail: reject,
       })

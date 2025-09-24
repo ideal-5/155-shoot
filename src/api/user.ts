@@ -17,3 +17,13 @@ export function userCityAgentApplyApi(params: User.UserCityAgentApplyParams) {
 export function getUserCityAgentApplyDetailApi() {
   return http.post<User.CityAgentApplyDetail>('/user/applyAgentLists')
 }
+
+// 景区入驻申请
+export function userScenicApplyApi(params: User.UserScenicApplyParams) {
+  return http.post<any>('/user/applyBusiness', params)
+}
+
+// 景区入驻申请申请详情
+export function getUserScenicApplyDetailApi() {
+  return http.post<User.ScenicApplyDetail>('/user/applyBusinesslists')
+}
