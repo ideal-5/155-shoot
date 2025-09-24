@@ -22,3 +22,8 @@ export function amountDistributionCenterApi(params: Paging) {
 export function amountMyTeamListApi(params: Paging) {
   return http.post<{ all_amount: string, rows: Amount.MyTeamList }>('/user/myTeam', params)
 }
+
+// 资产明细
+export function amountAssetsDetailListApi(params: Amount.AssetsDetailListParams) {
+  return http.post<{ rows: Amount.AssetsDetailList }>('/user/amountRecord', params)
+}

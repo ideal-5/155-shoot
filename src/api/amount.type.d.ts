@@ -24,3 +24,16 @@ export type DistributionCenterList = {
   type_str: string
   amount: string
 }[]
+
+export interface AssetsDetailListParams extends Paging {
+  /** 1收入 2支出 */
+  type: 1 | 2
+}
+
+export type AssetsDetailList = {
+  type_str: string
+  create_time: string
+  id: string
+  amount: string
+  type: AssetsDetailListParams['type']
+}[]

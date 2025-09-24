@@ -1,18 +1,18 @@
 <script setup lang='ts'>
-import type { UnwrapRef } from 'vue'
+import { amountAssetsDetailListApi } from '@/api'
 
 const { userInfo } = storeToRefs(useUserStore())
 
 const pagingRef = ref(null)
-const activeTab = ref<UnwrapRef<typeof tabs>[number]['type']>('in')
+const activeTab = ref(0)
 const tabs = ref([
   {
     name: '收入',
-    type: 'in',
+    type: 1,
   },
   {
     name: '支出',
-    type: 'out',
+    type: 2,
   },
 ] as const)
 
@@ -20,16 +20,13 @@ function tabChange() {
   pagingRef.value.reload()
 }
 
-type List = Awaited<ReturnType<typeof getTestListApi>>
+type List = Awaited<ReturnType<typeof amountAssetsDetailListApi>>['data']['rows']
 const dataList = ref<List>([])
 
-function queryList(page?: number, pageSize?: number) {
-  getTestListApi(
-    page,
-    pageSize,
-  )
-    .then((data) => {
-      pagingRef.value.complete(data)
+function queryList(page?: number, limit?: number) {
+  amountAssetsDetailListApi({ page, limit, type: tabs.value[activeTab.value].type })
+    .then(({ data }) => {
+      pagingRef.value.complete(data.rows)
     })
     .catch(() => {
       pagingRef.value.complete(false)
@@ -67,7 +64,7 @@ function queryList(page?: number, pageSize?: number) {
       <div class="box-border wfull b-rd-2.5 bg-#fff p3">
         <wd-tabs v-model="activeTab" @change="tabChange">
           <block v-for="i in tabs" :key="i.type">
-            <wd-tab :title="i.name" :name="i.type" />
+            <wd-tab :title="i.name" />
           </block>
         </wd-tabs>
 
@@ -86,17 +83,17 @@ function queryList(page?: number, pageSize?: number) {
             >
               <div>
                 <div class="text-3.5 text-#111827 fw500">
-                  {{ item.title }}
+                  {{ item.type_str }}
                 </div>
                 <div class="text-(3 #A0AEC0)">
-                  2025.06.09 15:20
+                  {{ item.create_time }}
                 </div>
               </div>
               <div
                 class="text-(3.75 #FF7252)"
-                :class="[activeTab === 'in' && 'text-#5CC5A2!']"
+                :class="[Number(item.type) === 1 && 'text-#5CC5A2!']"
               >
-                +300
+                {{ Number(item.type) === 1 ? '+' : '-' }}{{ item.amount }}
               </div>
             </div>
             <!-- 下拉刷新  -->
