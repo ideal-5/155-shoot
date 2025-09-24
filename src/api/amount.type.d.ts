@@ -37,3 +37,15 @@ export type AssetsDetailList = {
   amount: string
   type: AssetsDetailListParams['type']
 }[]
+
+export type WithdrawRecordList = {
+  amount: string
+  cash_amount: string
+  create_time: string
+  fee: string
+  id: string
+  fee_amount: string
+  /** -1待通过 1待用户确认 2已完成 -2 已拒绝 */
+  status: -1 | 1 | 2 | -2
+  wx_json: string
+}[]

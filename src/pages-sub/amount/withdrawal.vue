@@ -1,9 +1,41 @@
 <script setup lang='ts'>
+import { amountWithdrawApi, getConfigDetailApi } from '@/api'
+
 const userStore = useUserStore()
+const { userInfo } = storeToRefs(userStore)
 
 const val = ref('')
 
 const toast = useToast()
+
+const configDetail = ref<Awaited<ReturnType<typeof getConfigDetailApi>>['data']>()
+onLoad(async () => {
+  const { data } = await getConfigDetailApi()
+  configDetail.value = data
+})
+
+async function tapSubmit() {
+  const amount = Number(val.value)
+  if (!amount) {
+    toast.show('请输入提现金额')
+    return
+  }
+  if (!Number.isFinite(amount)) {
+    toast.warning('请输入合法的金额')
+    return
+  }
+  if (amount < Number(configDetail.value?.w_amount || 0)) {
+    toast.warning(`金额必须大于 ${configDetail.value?.w_amount || 0}`)
+    return
+  }
+
+  const { code, msg } = await amountWithdrawApi(amount)
+  toast[code === 1 ? 'success' : 'error'](msg)
+  if (code === 1) {
+    userStore.fetchUserInfo()
+    gotoPage('/pages-sub/amount/hint')
+  }
+}
 </script>
 
 <template>
@@ -37,13 +69,13 @@ const toast = useToast()
         <div class="mr3.75 flex-shrink-0 text-(6.25 #111827) fw500">
           ￥
         </div>
-        <wd-input v-model="val" input-mode="numeric" custom-class="flex-1" type="number" placeholder="可提现￥1000.00" />
+        <wd-input v-model="val" input-mode="number" custom-class="flex-1" type="number" :placeholder="`可提现￥${userInfo?.amount}`" />
       </div>
       <div class="wf f-c justify-between">
         <div class="text-(3 #677180) fw500">
-          提现金额≥¥50才能提现
+          提现金额≥¥{{ configDetail?.w_amount }}才能提现
         </div>
-        <div class="text-(3.75 #45ADF5) fw500">
+        <div class="text-(3.75 #45ADF5) fw500" @click="val = userInfo?.amount">
           全部提现
         </div>
       </div>
@@ -55,13 +87,13 @@ const toast = useToast()
     </div>
 
     <div class="mt10 box-border wf f-c-c px5.5">
-      <wd-button custom-class="bg-#1E88E5! wf! h11.5!" @click="gotoPage('/pages-sub/amount/hint')">
-        提现
+      <wd-button custom-class="bg-#1E88E5! wf! h11.5!" @click="tapSubmit">
+        申请提现
       </wd-button>
     </div>
 
     <div class="mt3.75 wf f-c-c text-(3 #A0AEC0)">
-      温馨提示：每日1次提现机会，申请发起后，预计24小时到账
+      温馨提示：提现手续费为{{ Number(configDetail?.w_fee) }}%。
     </div>
   </div>
 </template>

@@ -1,14 +1,27 @@
 <script setup lang='ts'>
+import { amountWithdrawRecordApi } from '@/api'
+
 const pagingRef = ref<ZPagingRef>()
-const dataList = ref<Awaited<ReturnType<typeof getTestListApi>>>([])
-async function queryList(pageNo: number, pageSize: number) {
-  getTestListApi(pageNo, pageSize)
-    .then((res) => {
-      pagingRef.value.complete(res)
+const dataList = ref<Awaited<ReturnType<typeof amountWithdrawRecordApi>>['data']>([])
+async function queryList(page: number, limit: number) {
+  if (page > 1) {
+    pagingRef.value.complete([])
+  }
+  amountWithdrawRecordApi()
+    .then(({ data }) => {
+      pagingRef.value.complete(data)
     })
     .catch((_res) => {
       pagingRef.value.complete(false)
     })
+}
+
+const statusText = {
+  '-1': { text: '审核中', color: '#A0AEC0' },
+  '1': { text: '待确认', color: '#4CAF50' },
+  '2': { text: '已完成', color: '#1E88E5' },
+  '-2': { text: '已拒绝', color: '#FF594D' },
+
 }
 </script>
 
@@ -30,18 +43,29 @@ async function queryList(pageNo: number, pageSize: number) {
       <div
         v-for="item in dataList"
         :key="item.id"
-        class="box-border wf f-c justify-between b-b-(1 #EFEFEF solid) py3"
+        class="box-border wf b-b-(1 #EFEFEF solid) py3"
       >
-        <div>
-          <div class="text-(3.5 #111827) fw500">
-            提现
+        <div class="wf f-c justify-between">
+          <div>
+            <div class="text-(3.5 #111827) fw500">
+              <span>提现-</span>
+              <span :style="{ color: statusText[item.status].color }">{{ statusText[item.status].text }}</span>
+            </div>
+            <div class="text-(3 #A0AEC0)" fw500>
+              {{ item.create_time }}
+            </div>
           </div>
-          <div class="text-(3 #A0AEC0)" fw500>
-            2025.06.09 15:20
+          <div class="text-(3.75 #FF7252) fw500">
+            {{ item.cash_amount }}
           </div>
         </div>
-        <div class="text-(3.75 #FF7252) fw500">
-          -500
+        <div v-if="Number(item.status) === 1" class="box-border wf f-c justify-between py1">
+          <div class="min-w-0 flex-1 text-(2.5 #A0AEC0)">
+            {{ item.wx_json }}
+          </div>
+          <wd-button plain custom-class="w-fit! flex-shrink-0! h5.25! b-rd-1.25! min-w-0! px1.5!">
+            立即提现
+          </wd-button>
         </div>
       </div>
     </div>

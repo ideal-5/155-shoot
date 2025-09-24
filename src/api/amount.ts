@@ -27,3 +27,13 @@ export function amountMyTeamListApi(params: Paging) {
 export function amountAssetsDetailListApi(params: Amount.AssetsDetailListParams) {
   return http.post<{ rows: Amount.AssetsDetailList }>('/user/amountRecord', params)
 }
+
+// 提现申请
+export function amountWithdrawApi(amount: number) {
+  return http.post('/user/applyWithdrawal', { amount })
+}
+
+// 提现记录
+export function amountWithdrawRecordApi() {
+  return http.post<Amount.WithdrawRecordList>('/user/withdrawalLists')
+}

@@ -1,5 +1,9 @@
 <script setup lang='ts'>
-
+function tapGo() {
+  uni.redirectTo({
+    url: '/pages-sub/amount/withdrawal-details',
+  })
+}
 </script>
 
 <template>
@@ -13,7 +17,7 @@
       提现成功
     </div>
 
-    <wd-button custom-class="w44! h11! bg-#1E88E5! ">
+    <wd-button custom-class="w44! h11! bg-#1E88E5!" @click="tapGo">
       我知道了
     </wd-button>
   </div>
