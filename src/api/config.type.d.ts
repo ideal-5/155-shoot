@@ -12,3 +12,10 @@ export interface DetailResult {
   w_max_amount: string
   create_time: string
 }
+
+export interface ConfigFeedbackParams {
+  content: string
+  tel: string
+  img: string
+  type: number | string
+}

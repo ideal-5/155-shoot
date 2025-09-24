@@ -12,3 +12,8 @@ export function getConfigBannerApi() {
 export function getConfigDetailApi() {
   return http.post<Config.DetailResult>('/index/setConf')
 }
+
+// 意见反馈
+export function postConfigFeedbackApi(params: Config.ConfigFeedbackParams) {
+  return http.post('/user/advice', params)
+}

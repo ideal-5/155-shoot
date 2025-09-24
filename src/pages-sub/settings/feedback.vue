@@ -1,45 +1,59 @@
 <script setup lang="ts">
-const { bottomStyle, bottomHeightNum } = useStyle().absoluteBottom(150)
+import { postConfigFeedbackApi } from '@/api'
 
+const { bottomStyle, bottomHeightNum } = useStyle().absoluteBottom(150)
+const toast = useToast()
+
+const activeIssueType = ref(null)
 const issueList = ref([
-  { content: '功能问题', isSelect: false },
-  { content: '闪退卡顿', isSelect: false },
-  { content: '操作异常', isSelect: false },
-  { content: '其他', isSelect: false },
+  { content: '功能问题', isSelect: false, type: 1 },
+  { content: '闪退卡顿', isSelect: false, type: 2 },
+  { content: '操作异常', isSelect: false, type: 3 },
+  // { content: '其他', isSelect: false },
 ])
 
-const phone = ref('')
+const from = ref<Parameters<typeof postConfigFeedbackApi>[0]>({
+  content: '',
+  tel: '',
+  img: '',
+  type: '',
+})
 
-const suggest = ref('')
+const { selectImage, uploadImgs } = useUploadImg()
 
 const imageList = ref<string[]>([])
-
 async function uploadImg() {
-  if (imageList.value.length >= 4)
+  if (imageList.value.length >= 4) {
     return
+  }
+  try {
+    const count = 6 - imageList.value.length
+    const imgs = await selectImage(count)
+    const res = await uploadImgs(imgs.tempFiles.map(item => item.tempFilePath))
+    imageList.value.push(...res.map(i => i.url))
+  }
+  catch (error) {
+    toast.error('图片上传失败')
+  }
 }
 
-const toast = useToast()
 async function submit() {
-  const reasonList = issueList.value.filter(i => i.isSelect)
-  if (reasonList.length === 0 || !suggest.value || !phone.value) {
-    toast.warning('请填写完整')
+  from.value.img = imageList.value.join(',')
+  from.value.type = activeIssueType.value
+
+  // 随便填写任何一个信息就可以
+  if (!Object.values(from.value).some(val => !!val)) {
+    toast.warning('请填写完整信息')
     return
   }
 
-  // const { code, msg } = await configFeedbackApi({
-  //   reason: issueList.value
-  //     .filter(i => i.isSelect)
-  //     .map(i => i.content)
-  //     .join(','),
-  //   suggest: suggest.value,
-  //   phone: phone.value,
-  //   imageList: imageList.value.join(','),
-  // })
-  // toast[code === 200 ? 'success' : 'warning'](msg)
-  // if (code === 200) {
-  //   uni.navigateBack()
-  // }
+  const { code, msg } = await postConfigFeedbackApi(from.value)
+  toast[code === 200 ? 'success' : 'warning'](msg)
+  if (code === 200) {
+    setTimeout(() => {
+      uni.navigateBack()
+    }, 500)
+  }
 }
 </script>
 
@@ -58,18 +72,19 @@ async function submit() {
           v-for="(item, i) in issueList"
           :key="i"
           class="box-border wf f-c justify-between b-b-(1 #F7F7F7 solid) py3.5 first:pt0 last:(pb0 b-0!)"
-          @click="item.isSelect = !item.isSelect"
+          @click="activeIssueType = item.type"
         >
+          <!-- @click="item.isSelect = !item.isSelect" -->
           <div class="text-(3.75 #111827) fw500">
             {{ item.content }}
           </div>
           <div
             class="size-3.5 f-c-c b-(1 #677180 rd-full solid) transition-all"
-            :class="[item.isSelect && 'b-#1E88E5!']"
+            :class="[activeIssueType === item.type && 'b-#1E88E5!']"
           >
             <div
               class="size-0 b-rd-full bg-#1E88E5 transition-all"
-              :class="[item.isSelect && 'size-70%!']"
+              :class="[activeIssueType === item.type && 'size-70%!']"
             />
           </div>
         </div>
@@ -83,7 +98,7 @@ async function submit() {
           请填写10个字以上的问题描述，以便我们更好的帮助您解决问题
         </div> -->
         <wd-textarea
-          v-model="suggest"
+          v-model="from.content"
           custom-class="p0!"
           :maxlength="500"
           show-word-limit
@@ -118,7 +133,7 @@ async function submit() {
         </div>
         <div class="text-(3.25 #677180)" />
         <wd-input
-          v-model="phone"
+          v-model="from.tel"
           no-border
           type="tel"
           :maxlength="11"
