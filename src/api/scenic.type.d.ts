@@ -26,6 +26,7 @@ export interface ScenicDetail {
   title: string
   tag: string
   content: string
+  detalis: string
   type: string
   banner: string
   lag: string

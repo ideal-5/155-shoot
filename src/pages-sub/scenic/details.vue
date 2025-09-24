@@ -51,9 +51,10 @@ onLoad(async ({ id }) => {
           游玩攻略
         </div>
         <div class="mb3.75 mt3 box-border wf b-rd-2.5 bg-#F5F7FB p2.5 text-(3.5 #111827)">
-          <text selectable user-select>
+          <!-- <text selectable user-select>
             {{ detail?.content }}
-          </text>
+          </text> -->
+          <mp-html :content="detail?.detalis" />
         </div>
 
         <div class="text-(4 #111827) fw500">
