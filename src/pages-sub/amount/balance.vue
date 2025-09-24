@@ -1,6 +1,8 @@
 <script setup lang='ts'>
 import type { UnwrapRef } from 'vue'
 
+const { userInfo } = storeToRefs(useUserStore())
+
 const pagingRef = ref(null)
 const activeTab = ref<UnwrapRef<typeof tabs>[number]['type']>('in')
 const tabs = ref([
@@ -46,7 +48,7 @@ function queryList(page?: number, pageSize?: number) {
         总资产（元）
       </div>
       <div class="mb6 mt1.25 text-(9.5 #111827) fw500">
-        0.00
+        {{ userInfo?.amount }}
       </div>
       <div class="wf f-c">
         <wd-button plain type="info" custom-class="flex-1! flex-shrink-0! mr2.75! h10!" @click="gotoPage('/pages-sub/amount/withdrawal')">

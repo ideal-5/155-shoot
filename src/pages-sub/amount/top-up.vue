@@ -1,5 +1,10 @@
 <script setup lang='ts'>
+import { amountCreateOrderApi } from '@/api'
+
 const { bottomStyle } = useStyle().absoluteBottom(120)
+
+const { userInfo } = storeToRefs(useUserStore())
+const toast = useToast()
 
 const topUpList = ref([100, 200, 300, 400, 500])
 const activeCount = ref(100)
@@ -18,6 +23,25 @@ function tapCustom() {
   custom.value = true
   activeCount.value = null
 }
+
+async function tapUp() {
+  const amount = Number(custom.value ? customCount.value : activeCount.value)
+
+  if (!Number.isFinite(amount)) {
+    toast.warning('请输入合法的金额')
+    return
+  }
+  if (amount < 1) {
+    toast.warning('金额必须大于 1')
+    return
+  }
+  const { data, code, msg } = await amountCreateOrderApi(amount)
+  if (code !== 1) {
+    toast.error(msg)
+    return
+  }
+  console.log('下单', data)
+}
 </script>
 
 <template>
@@ -31,7 +55,7 @@ function tapCustom() {
         我的余额
       </div>
       <div class="text-8.75">
-        5000.00
+        {{ userInfo?.amount }}
       </div>
     </div>
 
@@ -70,7 +94,7 @@ function tapCustom() {
     </div>
 
     <div :style="bottomStyle" class="box-border f-c-c px3.75">
-      <wd-button custom-class="h10.5! wf! bg-#1E88E5! text-(3.75!) fw500!">
+      <wd-button custom-class="h10.5! wf! bg-#1E88E5! text-(3.75!) fw500!" @click="tapUp">
         立即充值
       </wd-button>
     </div>
