@@ -89,7 +89,7 @@ async function start({ item: { id } }: { item: { id: string } }) {
   />
   <wd-overlay :show="showOverlay">
     <div class="size-full f-c-c">
-      <div class="glass-12 box-border w50vw f-c-c flex-col b-rd-2 py10">
+      <div class="glass-12 box-border w50vw f-c-c flex-col b-rd-2 py10 text-#fff">
         <i class="i-svg-spinners:90-ring-with-bg mb3 text-5 fw900" />
         <div class="text-3.5">
           生成图片中，请稍后...
@@ -118,7 +118,7 @@ async function start({ item: { id } }: { item: { id: string } }) {
 
       <div class="box-border wf b-rd-2.5 bg-#DBE0E5 p5">
         <WImage
-          src="https://picsum.photos/200/150"
+          :src="`${IMAGE_BASE_URL}/bg/21.png`"
           custom-class="b-(#FAFAFC! 1! solid!) wf! b-rd-tl-6! b-rd-br-6! overflow-hidden"
           mode="widthFix"
         />

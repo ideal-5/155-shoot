@@ -60,7 +60,7 @@ async function tapBtn() {
 <template>
   <wd-overlay :show="showOverlay" :z-index="20">
     <div class="size-full f-c-c">
-      <div class="glass-16 box-border w50vw f-c-c flex-col b-rd-2 py10">
+      <div class="glass-16 box-border w50vw f-c-c flex-col b-rd-2 py10 text-#fff">
         <i class="i-svg-spinners:90-ring-with-bg mb3 text-5 fw900" />
         <div class="text-3.5">
           保存图片中，请稍后...
@@ -93,6 +93,7 @@ async function tapBtn() {
                 custom-class="wf! overflow-hidden! b-rd-2.5!"
                 mode="widthFix"
                 :src="item.img"
+                :show-menu-by-longpress="item.isFollow"
               />
             </div>
           </FollowDiv>
