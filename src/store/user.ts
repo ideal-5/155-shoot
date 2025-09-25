@@ -7,6 +7,7 @@ const userInfoState: IUserInfo = {
   nickname: '',
   img: '/static/images/default-avatar.png',
   amount: '0.00',
+  tel: '',
   agent_apply: -1,
   business_apply: -1,
 }

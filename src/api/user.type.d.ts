@@ -29,3 +29,9 @@ export interface ScenicApplyDetail {
   img: string
   title: string
 }
+
+export interface PutUserInfoParams {
+  nickname: string
+  img: string
+  tel: string
+}

@@ -20,6 +20,7 @@ declare global {
     id?: string
     nickname: string
     img: string
+    tel: string
     amount: string
     /** 城市代理是否申请 */
     agent_apply: -1 | 1

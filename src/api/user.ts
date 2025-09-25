@@ -27,3 +27,8 @@ export function userScenicApplyApi(params: User.UserScenicApplyParams) {
 export function getUserScenicApplyDetailApi() {
   return http.post<User.ScenicApplyDetail>('/user/applyBusinesslists')
 }
+
+// 修改用户信息
+export function putUserInfoApi(params: User.PutUserInfoParams) {
+  return http.post<any>('/user/editUserInfo', params)
+}
