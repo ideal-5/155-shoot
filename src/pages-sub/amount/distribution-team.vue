@@ -118,7 +118,6 @@ function showQrcodeImg() {
   </div>
 
   <template v-if="qrcodeUrl">
-    <!--  -->
     <l-painter is-canvas-to-temp-file-path css="width: 700rpx" custom-style="position: fixed; left: 200%" @success="imgSuccess">
       <l-painter-view
         css="width: 700rpx;background:#fff;border-radius:20rpx"
@@ -126,13 +125,14 @@ function showQrcodeImg() {
         <l-painter-view
           css="width: 100%; display: flex; justify-content: center;"
         >
-          <l-painter-image :src="qrcodeUrl" css="width: 700rpx; height: 500rpx; object-fit: cover; object-position: 50% 50%;border-radius:20rpx 20rpx 0 0;" />
+          <!-- height: 500rpx; -->
+          <l-painter-image :src="`${IMAGE_BASE_URL}/bg/32.png`" css="width: 700rpx;  object-fit: cover; object-position: 50% 50%;border-radius:20rpx 20rpx 0 0;" />
         </l-painter-view>
 
         <l-painter-view
-          css="width: 100%; display:flex;align-items:center;justify-content:center; margin:50rpx 0; "
+          css="width: 100%; display:flex;align-items:center;justify-content:center; margin:-50rpx 0 50rpx 0;"
         >
-          <l-painter-image :src="qrcodeUrl" css="width: 200rpx; height: 200rpx" />
+          <l-painter-image :src="qrcodeUrl" css="width: 200rpx; height: 200rpx; border-radius: 50%;" />
         </l-painter-view>
         <l-painter-view
           css="width: 100%; display:flex;align-items:center;justify-content:center; margin-bottom:50rpx; "
