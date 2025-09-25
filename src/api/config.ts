@@ -17,3 +17,8 @@ export function getConfigDetailApi() {
 export function postConfigFeedbackApi(params: Config.ConfigFeedbackParams) {
   return http.post('/user/advice', params)
 }
+
+// 协议
+export function getConfigAgreementApi(params: Config.AgreementParams) {
+  return http.post<Config.AgreementResult>('/index/agreement', params)
+}

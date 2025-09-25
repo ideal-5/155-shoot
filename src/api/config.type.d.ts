@@ -19,3 +19,15 @@ export interface ConfigFeedbackParams {
   img: string
   type: number | string
 }
+
+export interface AgreementParams {
+  type: '1' | '2' | '3'
+}
+
+export interface AgreementResult {
+  id: string
+  title: string
+  content: string
+  create_time: string
+  type: AgreementParams['type']
+}

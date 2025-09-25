@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { getLoginOpenIdApi, loginApi } from '@/api'
+import { getConfigAgreementApi, getLoginOpenIdApi, loginApi } from '@/api'
 
 const toast = useToast()
 const isAgree = ref(false)
@@ -43,14 +43,14 @@ async function tapLogin() {
 /**
  * 协议
  */
-// const showProtocol = ref(false)
-// const protocol = ref<Awaited<ReturnType<typeof configSinglePageInfo>>['data']>()
+const showProtocol = ref(false)
+const protocol = ref<Awaited<ReturnType<typeof getConfigAgreementApi>>['data']>()
 
-// async function openProtocolPopup(type: Parameters<typeof configSinglePageInfo>[0]) {
-//   const { data } = await configSinglePageInfo(type)
-//   protocol.value = data
-//   showProtocol.value = true
-// }
+async function openProtocolPopup(params: Parameters<typeof getConfigAgreementApi>[0]) {
+  const { data } = await getConfigAgreementApi(params)
+  protocol.value = data
+  showProtocol.value = true
+}
 </script>
 
 <template>
@@ -76,9 +76,9 @@ async function tapLogin() {
       </div>
       <div class="text-(3.5 #677180)">
         <span>我已认真阅读并同意</span>
-        <span class="text-#1E88E5">《服务协议》</span>
+        <span class="text-#1E88E5" @click.stop="openProtocolPopup({ type: '1' })">《用户协议》</span>
         <span>、</span>
-        <span class="text-#1E88E5">《隐私政策》</span>
+        <span class="text-#1E88E5" @click.stop="openProtocolPopup({ type: '2' })">《隐私政策》</span>
       </div>
     </div>
 
@@ -91,7 +91,7 @@ async function tapLogin() {
     />
   </div>
   <!-- 协议弹窗 -->
-  <!-- <wd-popup v-model="showProtocol" custom-class="bg-transparent!" closable>
+  <wd-popup v-model="showProtocol" custom-class="bg-transparent!" closable>
     <div class="box-border w90vw b-rd-3 bg-#fff p3">
       <div class="mb2 wf f-c-c text-4 fw500">
         {{ protocol?.title }}
@@ -100,7 +100,7 @@ async function tapLogin() {
         <mp-html :content="protocol?.content" />
       </div>
     </div>
-  </wd-popup> -->
+  </wd-popup>
 </template>
 
 <style scoped lang='scss'>
