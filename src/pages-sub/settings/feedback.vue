@@ -48,8 +48,8 @@ async function submit() {
   }
 
   const { code, msg } = await postConfigFeedbackApi(from.value)
-  toast[code === 200 ? 'success' : 'warning'](msg)
-  if (code === 200) {
+  toast[code === 1 ? 'success' : 'warning'](msg)
+  if (code === 1) {
     setTimeout(() => {
       uni.navigateBack()
     }, 500)

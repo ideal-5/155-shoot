@@ -25,7 +25,7 @@ export const useUserStore = defineStore(
     // 定义接口所需的信息 token userid
     const identityInfo = ref<IdentityInfo>({ ...identityInfoState })
 
-    // const hasLogin = ref(false)
+    const hasLogin = computed(() => !!identityInfo.value.userToken)
 
     // 设置用户身份信息
     const setIdentityInfo = (val: IdentityInfo) => {
@@ -60,6 +60,7 @@ export const useUserStore = defineStore(
     return {
       userInfo,
       identityInfo,
+      hasLogin,
       setIdentityInfo,
       clearUserInfo,
       fetchUserInfo,

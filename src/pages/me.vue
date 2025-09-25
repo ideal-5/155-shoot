@@ -36,7 +36,7 @@ function stopVideo(item: any) {
   uni.createVideoContext(`video${item.id}`).pause()
 }
 
-const { userInfo } = storeToRefs(useUserStore())
+const { userInfo, hasLogin } = storeToRefs(useUserStore())
 </script>
 
 <template>
@@ -47,9 +47,12 @@ const { userInfo } = storeToRefs(useUserStore())
       <div class="mb1.5 mt2.5 text-(4.75 #111827) fw500">
         {{ userInfo?.nickname }}
       </div>
-      <div class="text-(3 #000000) fw500">
+      <div v-if="hasLogin" class="text-(3 #000000) fw500">
         ID: {{ userInfo?.id }}
       </div>
+      <wd-button v-else custom-class="bg-#1E88E5!">
+        登陆
+      </wd-button>
     </div>
 
     <div class="box-border wf px3.75">
