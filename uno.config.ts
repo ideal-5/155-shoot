@@ -63,6 +63,17 @@ export default defineConfig({
     ],
     ['pt-safe', { 'padding-top': 'env(safe-area-inset-top)' }],
     ['pb-safe', { 'padding-bottom': 'env(safe-area-inset-bottom)' }],
+    [
+      /^glass-(\d+)$/,
+      ([, d]) => ({
+        'background-color': 'rgba(255,255,255,0.08)',
+        '-webkit-backdrop-filter': `blur(${d}px)`,
+        'backdrop-filter': `blur(${d}px)`,
+        'border': '1px solid rgba(255,255,255,0.12)',
+        'border-radius': '1rem',
+        'box-shadow': '0 8px 24px rgba(0,0,0,0.18)',
+      }),
+    ],
   ],
   theme: {
     colors: {

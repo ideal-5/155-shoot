@@ -1,6 +1,8 @@
 <script setup lang='ts'>
 const { SYSTEM } = storeToRefs(useSystemStore())
 
+const toast = useToast()
+
 const part = ref(SYSTEM.value.windowWidth / 10) // 可用屏幕宽度的1/10
 
 const imgList = ref([
@@ -9,9 +11,50 @@ const imgList = ref([
 ])
 
 const existFollow = computed(() => imgList.value.some(item => item.isFollow))
+
+onMounted(() => {
+  const instance = getCurrentInstance().proxy
+  const eventChannel = (instance as any).getOpenerEventChannel()
+  eventChannel.on('sendData', (data: [string, string]) => {
+    imgList.value[0].img = data[0]
+    imgList.value[1].img = data[1]
+  })
+})
+
+const showOverlay = ref(false)
+async function tapBtn() {
+  const item = imgList.value.find(item => item.isFollow)
+  if (!item) {
+    uni.navigateBack()
+    return
+  }
+  try {
+    showOverlay.value = true
+    const { path } = await uni.getImageInfo({ src: item.img })
+    await uni.saveImageToPhotosAlbum({ filePath: path })
+    showOverlay.value = false
+    item.isFollow = false
+    toast.success('保存成功')
+  }
+  catch (error) {
+    showOverlay.value = false
+    toast.error('保存失败，请稍后再试')
+  }
+}
 </script>
 
 <template>
+  <wd-overlay :show="showOverlay" :z-index="20">
+    <div class="size-full f-c-c">
+      <div class="glass-16 box-border w50vw f-c-c flex-col b-rd-2 py10">
+        <i class="i-svg-spinners:90-ring-with-bg mb3 text-5 fw900" />
+        <div class="text-3.5">
+          保存图片中，请稍后...
+        </div>
+      </div>
+    </div>
+  </wd-overlay>
+
   <div class="min-h100vh w100vw bg-#F2F3F7">
     <NavBar bar-color="#fff">
       旅游攻略
@@ -44,7 +87,7 @@ const existFollow = computed(() => imgList.value.some(item => item.isFollow))
     </div>
 
     <div class="relative z11 box-border wf px8.75">
-      <wd-button custom-class="bg-[linear-gradient(156deg,#AFA3F8_0%,#777BF6_100%)]! wf! h11.25! text-(4.75!) fw500!">
+      <wd-button custom-class="bg-[linear-gradient(156deg,#AFA3F8_0%,#777BF6_100%)]! wf! h11.25! text-(4.75!) fw500!" @click="tapBtn">
         {{ existFollow ? '保存图片' : '重新生成' }}
       </wd-button>
     </div>
