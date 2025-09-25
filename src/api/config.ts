@@ -22,3 +22,8 @@ export function postConfigFeedbackApi(params: Config.ConfigFeedbackParams) {
 export function getConfigAgreementApi(params: Config.AgreementParams) {
   return http.post<Config.AgreementResult>('/index/agreement', params)
 }
+
+// 注销
+export function postConfigLogoutApi() {
+  return http.post('/user/cancelUser')
+}

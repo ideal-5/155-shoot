@@ -22,10 +22,24 @@ onMounted(() => {
 })
 
 const showOverlay = ref(false)
+
+const message = useMessage()
 async function tapBtn() {
   const item = imgList.value.find(item => item.isFollow)
   if (!item) {
-    uni.navigateBack()
+    try {
+      await message
+        .confirm({
+          msg: '离开页面后图片将被销毁! ',
+          // title: '确认注销账号嘛？',
+          confirmButtonText: '知道了',
+          cancelButtonText: '取消',
+        })
+      uni.navigateBack()
+    }
+    catch (error) {
+      return
+    }
     return
   }
   try {
