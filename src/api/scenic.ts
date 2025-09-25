@@ -41,3 +41,8 @@ export function getScenicMyFootprintApi(params: Paging) {
 export function getScenicFootprintDetailApi(id: string) {
   return http.post<Scenic.ScenicMyFootprintList[number]>(`/scenic/myFootDetails`, { id })
 }
+
+// 旅游攻略
+export function getScenicStrategyApi() {
+  return http.post<{ title: string, content: string }>('/scenic/strategy')
+}

@@ -2,7 +2,7 @@
 // 必须导入需要用到的页面生命周期（即使在当前页面上没有直接使用到）
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
 import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
-import { getConfigBannerApi, getHomeRecommendScenicApi } from '@/api'
+import { getConfigBannerApi, getHomeRecommendScenicApi, getScenicStrategyApi } from '@/api'
 
 definePage({
   type: 'home',
@@ -54,6 +54,16 @@ const scrollTop = ref(0)
 onPageScroll((e) => {
   scrollTop.value = e.scrollTop
 })
+
+async function gotoStrategy() {
+  const { data } = await getScenicStrategyApi()
+  uni.navigateTo({
+    url: '/pages-sub/settings/html-page',
+    success(res) {
+      res.eventChannel.emit('sendData', { title: data.title, content: data.content })
+    },
+  })
+}
 </script>
 
 <template>
@@ -128,7 +138,7 @@ onPageScroll((e) => {
             mode="scaleToFill"
           />
         </div>
-        <div class="size-full b-rd-3.25">
+        <div class="size-full b-rd-3.25" @click="gotoStrategy">
           <image
             :src="`${IMAGE_BASE_URL}/bg/29.png`"
             class="size-full"
