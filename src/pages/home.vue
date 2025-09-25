@@ -64,6 +64,15 @@ async function gotoStrategy() {
     },
   })
 }
+
+const userStore = useUserStore()
+const { inviteCode } = storeToRefs(userStore)
+
+onLoad((options) => {
+  if (options.scene) {
+    inviteCode.value = options.scene
+  }
+})
 </script>
 
 <template>

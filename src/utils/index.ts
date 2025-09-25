@@ -197,3 +197,21 @@ export const isDoubleTokenMode = import.meta.env.VITE_AUTH_MODE === 'double'
  * 通常为 /pages/index/index
  */
 export const HOME_PAGE = `/${pages.find(page => page.type === 'home')?.path || pages[0].path}`
+
+export function base64ToTempFilePath(base64: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const fs = uni.getFileSystemManager()
+    const fileName = `temp_image_${Date.now()}.png` // 自定义文件名，可根据需要修改
+    const filePath = `${(uni as any).env.USER_DATA_PATH}/${fileName}`
+    const buffer = uni.base64ToArrayBuffer(base64.replace(/^data:image\/\w+;base64,/, ''))
+    fs.writeFile({
+      filePath,
+      data: buffer,
+      encoding: 'binary',
+      success() {
+        resolve(filePath)
+      },
+      fail: reject,
+    })
+  })
+}

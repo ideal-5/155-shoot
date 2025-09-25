@@ -6,6 +6,6 @@ export function getLoginOpenIdApi(code: string) {
 }
 
 // 登陆
-export function loginApi(openid: string) {
-  return http.post<{ token: string, userId: number }>('/index/login', { openid })
+export function loginApi(openid: string, userNo?: string) {
+  return http.post<{ token: string, userId: number }>('/index/login', { openid, userNo })
 }

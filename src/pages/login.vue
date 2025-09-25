@@ -25,7 +25,7 @@ async function getOpenId() {
 }
 
 const userStore = useUserStore()
-
+const { inviteCode } = storeToRefs(userStore)
 async function tapLogin() {
   if (!isAgree.value) {
     toast.error('请先阅读并同意协议')
@@ -34,9 +34,10 @@ async function tapLogin() {
   if (!openid.value) {
     await getOpenId()
   }
-  const { data: { token, userId } } = await loginApi(openid.value)
+  const { data: { token, userId } } = await loginApi(openid.value, inviteCode.value)
   userStore.setIdentityInfo({ userToken: token, userId })
   userStore.fetchUserInfo()
+  inviteCode.value = ''
   uni.switchTab({ url: '/pages/home' })
 }
 

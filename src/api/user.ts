@@ -30,5 +30,10 @@ export function getUserScenicApplyDetailApi() {
 
 // 修改用户信息
 export function putUserInfoApi(params: User.PutUserInfoParams) {
-  return http.post<any>('/user/editUserInfo', params)
+  return http.post<null>('/user/editUserInfo', params)
+}
+
+// 我的邀请二维码
+export function getUserInviteQrcodeApi() {
+  return http.post<string>('/user/userQrCode')
 }

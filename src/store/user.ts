@@ -28,6 +28,8 @@ export const useUserStore = defineStore(
 
     const hasLogin = computed(() => !!identityInfo.value.userToken)
 
+    const inviteCode = ref('')
+
     // 设置用户身份信息
     const setIdentityInfo = (val: IdentityInfo) => {
       identityInfo.value = val
@@ -62,6 +64,7 @@ export const useUserStore = defineStore(
       userInfo,
       identityInfo,
       hasLogin,
+      inviteCode,
       setIdentityInfo,
       clearUserInfo,
       fetchUserInfo,

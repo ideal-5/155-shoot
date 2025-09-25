@@ -2,7 +2,8 @@
 // 必须导入需要用到的页面生命周期（即使在当前页面上没有直接使用到）
 import { onPageScroll, onReachBottom } from '@dcloudio/uni-app'
 import useZPaging from 'z-paging/components/z-paging/js/hooks/useZPaging'
-import { amountDistributionCenterApi } from '@/api'
+import { amountDistributionCenterApi, getUserInviteQrcodeApi } from '@/api'
+import { base64ToTempFilePath } from '@/utils'
 
 const { userInfo } = storeToRefs(useUserStore())
 
@@ -23,6 +24,28 @@ async function queryList(page: number, limit: number) {
     .catch((_res) => {
       pagingRef.value.complete(false)
     })
+}
+
+const qrcodeUrl = ref('')
+const posterUrl = ref('')
+
+onLoad(async () => {
+  const { data } = await getUserInviteQrcodeApi()
+  qrcodeUrl.value = data
+})
+
+async function imgSuccess(e: string) {
+  posterUrl.value = await base64ToTempFilePath(e)
+}
+
+function showQrcodeImg() {
+  wx.showShareImageMenu({
+    path: posterUrl.value,
+    fail: (err) => {
+      // toast.error('生成海报出错,请稍后重试')
+      console.log('err', err)
+    },
+  })
 }
 </script>
 
@@ -62,8 +85,14 @@ async function queryList(page: number, limit: number) {
     </div>
 
     <div class="mt4.5 box-border wf px9.5">
-      <wd-button custom-class="bg-#1E88E5! h12! wf!">
-        邀请好友
+      <wd-button custom-class="bg-#1E88E5! h12! wf!" :disabled="!posterUrl" @click="showQrcodeImg">
+        <div v-if="posterUrl">
+          邀请好友
+        </div>
+        <div v-if="!posterUrl" class="f-c">
+          <i class="i-svg-spinners:ring-resize" />
+          <span class="ml2">生成海报中...</span>
+        </div>
       </wd-button>
     </div>
 
@@ -117,6 +146,34 @@ async function queryList(page: number, limit: number) {
       </z-paging>
     </div>
   </div>
+  <template v-if="qrcodeUrl">
+    <!--  -->
+    <l-painter is-canvas-to-temp-file-path css="width: 700rpx" custom-style="position: fixed; left: 200%" @success="imgSuccess">
+      <l-painter-view
+        css="width: 700rpx;background:#fff;border-radius:20rpx"
+      >
+        <l-painter-view
+          css="width: 100%; display: flex; justify-content: center;"
+        >
+          <l-painter-image :src="qrcodeUrl" css="width: 700rpx; height: 500rpx; object-fit: cover; object-position: 50% 50%;border-radius:20rpx 20rpx 0 0;" />
+        </l-painter-view>
+
+        <l-painter-view
+          css="width: 100%; display:flex;align-items:center;justify-content:center; margin:50rpx 0; "
+        >
+          <l-painter-image :src="qrcodeUrl" css="width: 200rpx; height: 200rpx" />
+        </l-painter-view>
+        <l-painter-view
+          css="width: 100%; display:flex;align-items:center;justify-content:center; margin-bottom:50rpx; "
+        >
+          <l-painter-text
+            text="微信扫一扫，使用小程序"
+            css="font-size: 30rpx; color: #000; font-weight: 600;"
+          />
+        </l-painter-view>
+      </l-painter-view>
+    </l-painter>
+  </template>
 </template>
 
 <style scoped lang='scss'>
