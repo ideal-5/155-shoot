@@ -1,8 +1,16 @@
 <script setup lang='ts'>
 const ahead = ref(true)
 
-function tapTake() {
-  gotoPage('/pages-sub/selfie/generated')
+async function tapTake() {
+  uni.createCameraContext().takePhoto({
+    success: (res) => {
+      console.log('res', res.tempImagePath)
+    },
+    fail: (err) => {
+      console.log('err', err)
+    },
+  })
+  // gotoPage('/pages-sub/selfie/generated')
 }
 </script>
 

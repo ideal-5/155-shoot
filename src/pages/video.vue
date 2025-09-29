@@ -1,9 +1,8 @@
 <script setup lang='ts'>
+import { getScenicListSelectApi } from '@/api'
+
 const height = ref<number>(0)
 const anchors = ref<number[]>([])
-
-const data = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-const active = ref('A')
 
 const { SYSTEM, navbarHeight } = storeToRefs(useSystemStore())
 onLoad(() => {
@@ -11,7 +10,26 @@ onLoad(() => {
   height.value = anchors.value[0]
 })
 
+const scenicListSelect = ref<Awaited<ReturnType<typeof getScenicListSelectApi>>>([])
+const activeScenicSelectId = ref('')
+
+const activeScenic = computed(() => {
+  return scenicListSelect.value.find(item => item.value === activeScenicSelectId.value)
+})
+
+onLoad(async () => {
+  const data = await getScenicListSelectApi()
+  scenicListSelect.value = data
+})
+
+const toast = useToast()
+
 function tapToSelfie() {
+  if (!activeScenicSelectId.value) {
+    toast.warning('请先选择景区')
+    height.value = anchors.value[1]
+    return
+  }
   gotoPage('/pages-sub/selfie/index')
 }
 </script>
@@ -34,7 +52,7 @@ function tapToSelfie() {
             class="w10.25"
           />
           <div class="ml2 mr0.5">
-            请选择景区
+            {{ activeScenic ? activeScenic.label : '请选择景区' }}
           </div>
           <i class="i-line-md:chevron-small-right" />
         </div>
@@ -116,8 +134,8 @@ function tapToSelfie() {
 
   <wd-floating-panel v-model:height="height" :anchors="anchors">
     <wd-cell-group border>
-      <wd-cell v-for="item in data" :key="item" clickable :title="item" @click="active = item">
-        <i v-if="active === item" class="i-line-md:check-all" />
+      <wd-cell v-for="item in scenicListSelect" :key="item.value" clickable :title="item.label" @click="activeScenicSelectId = item.value">
+        <i v-if="activeScenicSelectId === item.value" class="i-line-md:check-all" />
       </wd-cell>
     </wd-cell-group>
   </wd-floating-panel>
