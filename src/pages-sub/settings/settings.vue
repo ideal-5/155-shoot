@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { getConfigAgreementApi, postConfigLogoutApi } from '@/api'
 
+const { bottomStyle } = useStyle().absoluteBottom(120)
+
 const userStore = useUserStore()
 const { hasLogin } = storeToRefs(userStore)
 
@@ -42,6 +44,25 @@ async function cancelUser() {
 
   }
 }
+
+async function logout() {
+  try {
+    await message
+      .confirm({
+        msg: '确认退出登陆嘛？',
+        title: '提示',
+        confirmButtonText: '退出登陆',
+        cancelButtonText: '取消',
+      })
+  }
+  catch (error) {
+    return
+  }
+  userStore.clearUserInfo()
+  uni.reLaunch({
+    url: '/pages/login',
+  })
+}
 </script>
 
 <template>
@@ -73,6 +94,12 @@ async function cancelUser() {
         <div>注销账号</div>
         <i class="i-line-md:chevron-small-right" />
       </div>
+    </div>
+
+    <div :style="bottomStyle" class="box-border f-c-c bg-#fff px4.5">
+      <wd-button type="error" custom-class="wf! h11!" @click="logout">
+        退出登陆
+      </wd-button>
     </div>
   </div>
 </template>

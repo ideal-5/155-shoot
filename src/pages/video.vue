@@ -134,7 +134,12 @@ function tapToSelfie() {
 
   <wd-floating-panel v-model:height="height" :anchors="anchors">
     <wd-cell-group border>
-      <wd-cell v-for="item in scenicListSelect" :key="item.value" clickable :title="item.label" @click="activeScenicSelectId = item.value">
+      <wd-cell
+        v-for="item in scenicListSelect" :key="item.value" clickable :title="item.label" @click="() => {
+          activeScenicSelectId = item.value
+          height = anchors[0]
+        }"
+      >
         <i v-if="activeScenicSelectId === item.value" class="i-line-md:check-all" />
       </wd-cell>
     </wd-cell-group>

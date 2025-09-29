@@ -2,15 +2,15 @@
 const ahead = ref(true)
 
 async function tapTake() {
-  uni.createCameraContext().takePhoto({
-    success: (res) => {
-      console.log('res', res.tempImagePath)
-    },
-    fail: (err) => {
-      console.log('err', err)
-    },
-  })
-  // gotoPage('/pages-sub/selfie/generated')
+  // uni.createCameraContext().takePhoto({
+  //   success: (res) => {
+  //     console.log('res', res.tempImagePath)
+  //   },
+  //   fail: (err) => {
+  //     console.log('err', err)
+  //   },
+  // })
+  gotoPage('/pages-sub/selfie/generated')
 }
 </script>
 

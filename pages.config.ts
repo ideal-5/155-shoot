@@ -22,4 +22,31 @@ export default defineUniPages({
   // tabbar 的配置统一在 “./src/tabbar/config.ts” 文件中
   // 无tabbar模式下，h5 设置为 {} 为了防止浏览器报错导致白屏
   tabBar: tabBar || (isH5 ? {} : undefined) as any,
+  preloadRule: {
+    'pages/home': {
+      network: 'all',
+      packages: [
+        'pages-sub/retouch',
+        'pages-sub/scenic',
+
+      ],
+    },
+    'pages/video': {
+      network: 'all',
+      packages: ['pages-sub/selfie'],
+    },
+    'pages/order': {
+      network: 'all',
+      packages: ['pages-sub/order'],
+    },
+    'pages/me': {
+      network: 'all',
+      packages: [
+        'pages-sub/me',
+        'pages-sub/amount',
+        'pages-sub/order',
+        'pages-sub/settings',
+      ],
+    },
+  },
 })

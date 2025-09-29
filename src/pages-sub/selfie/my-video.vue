@@ -6,6 +6,10 @@ const pagingRef = ref<ZPagingRef>()
 type TestList = ((Awaited<ReturnType<typeof getTestListApi>>[number]) & { isPlay: boolean, isPay: boolean })[]
 const dataList = ref<TestList>([])
 async function queryList(pageNo: number, pageSize: number) {
+  if (pageNo > 1) {
+    pagingRef.value.complete([])
+    return
+  }
   getTestListApi(pageNo, pageSize)
     .then((res) => {
       pagingRef.value.complete(res.map(item => ({
@@ -81,6 +85,7 @@ function tapDownload() {
   <z-paging
     ref="pagingRef"
     v-model="dataList"
+    :default-page-size="6"
     :paging-style="{ backgroundColor: '#F2F3F7' }"
     @query="queryList"
   >

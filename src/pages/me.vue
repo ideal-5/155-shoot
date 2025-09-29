@@ -37,6 +37,12 @@ function stopVideo(item: any) {
 }
 
 const { userInfo, hasLogin } = storeToRefs(useUserStore())
+
+function gotoLogin() {
+  uni.navigateTo({
+    url: '/pages/login?type=showBack',
+  })
+}
 </script>
 
 <template>
@@ -50,9 +56,11 @@ const { userInfo, hasLogin } = storeToRefs(useUserStore())
       <div v-if="hasLogin" class="text-(3 #000000) fw500">
         ID: {{ userInfo?.id }}
       </div>
-      <wd-button v-else custom-class="bg-#1E88E5!">
-        登陆
-      </wd-button>
+      <div v-else @click.stop>
+        <wd-button custom-class="bg-#1E88E5!" @click.stop="gotoLogin">
+          登陆
+        </wd-button>
+      </div>
     </div>
 
     <div class="box-border wf px3.75">

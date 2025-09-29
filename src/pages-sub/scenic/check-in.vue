@@ -29,7 +29,25 @@ async function tapSelectImage() {
   }
 }
 
+const { hasLogin } = storeToRefs(useUserStore())
+const message = useMessage()
 async function tapCheckIn() {
+  if (!hasLogin.value) {
+    try {
+      await message
+        .confirm({
+          msg: '登陆后才能成功打卡，是否去登陆?',
+          title: '提示',
+          confirmButtonText: '去登陆',
+        })
+      uni.navigateTo({
+        url: '/pages/login?type=showBack',
+      })
+    }
+    catch (error) {
+      return
+    }
+  }
   if (images.value.length < 1) {
     toast.warning('请上传图片')
     return
